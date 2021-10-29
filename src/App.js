@@ -1,9 +1,11 @@
-import React from 'react';
+import React, { useState } from 'react';
+import Login from 'components/Login';
 
 const App = () => {
-  return (
-    <h1>Hello World!</h1>
-  );
+  const [user, setUser] = useState(null);
+
+  if (!user) return <Login setUser={setUser} />;
+  return <h1>Dashboard</h1>;
 };
 
 export default App;
