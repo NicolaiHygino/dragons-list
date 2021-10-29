@@ -52,7 +52,7 @@ const Login = ({ setUser }) => {
             <ErrorMessage name="password" />
           </FieldWrapper>
 
-          <Button type="submit">Login</Button>
+          <Button type="submit">Submit</Button>
         </StyledForm>
       </Formik>
     </StyledLogin>
