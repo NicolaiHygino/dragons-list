@@ -1,5 +1,5 @@
 import Dashboard from '.';
-import { act, cleanup, render, screen, fireEvent, waitFor, getByAltText} from '@testing-library/react';
+import { act, cleanup, render, screen, fireEvent } from '@testing-library/react';
 import { MemoryRouter } from 'react-router';
 import axios from 'axios';
 import MockAdapter from 'axios-mock-adapter';

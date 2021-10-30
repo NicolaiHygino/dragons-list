@@ -2,7 +2,8 @@ import styled, { createGlobalStyle } from "styled-components";
 
 export const GlobalStyle = createGlobalStyle`
   :root {
-    --main-color: #e74c3c;
+    --main-color: #05c46b;
+    --scd-color: #ff5e57;
     --error: #c0392b;
     --bg-color: #EDECEE;
   }
