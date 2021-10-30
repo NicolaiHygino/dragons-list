@@ -1,4 +1,6 @@
 import React, { useState, useEffect } from 'react';
+import Details from 'views/Details';
+import { Link, Switch, Route } from 'react-router-dom';
 import axios from 'axios';
 import {
   Content,
@@ -28,12 +30,21 @@ const Dashboard = () => {
   }, []);
   
   return (
-    <Content>
-      <h1>Dashboard</h1>
-      {dragons.map(dragon => (
-        <DragonItem key={dragon.id} {...dragon} />
-      ))}
-    </Content>
+    <>
+      <Content>
+        <h1>Dashboard</h1>
+        {dragons.map(dragon => (
+          <Link key={dragon.id} to={`/dragon/${dragon.id}`} data-testid="dragon-item">
+            <DragonItem {...dragon} />
+          </Link>
+        ))}
+      </Content>
+      <Switch>
+        <Route path="/dragon/:id">
+          <Details />
+        </Route>
+      </Switch>
+    </>
   );
 };
 

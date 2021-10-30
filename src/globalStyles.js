@@ -11,6 +11,11 @@ export const GlobalStyle = createGlobalStyle`
     box-sizing: border-box;
   }
 
+  a {
+    text-decoration: none;
+    color: inherit;
+  }
+
   html, body {
     padding: 0;
     margin: 0;
@@ -18,6 +23,7 @@ export const GlobalStyle = createGlobalStyle`
 
   body {
     font-family: 'Source Sans Pro', sans-serif;
+    color: #333;
   }
 
   h1, h2, h3, h4, h5, h6, p {
