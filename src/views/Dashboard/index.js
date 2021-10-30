@@ -1,8 +1,24 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import styled from 'styled-components';
+import {
+  Content,
+  Item,
+  Name,
+  Type,
+  StyledDate,
+} from './style';
 
 const apiURL = 'http://5c4b2a47aa8ee500142b4887.mockapi.io/api/v1/dragon';
+
+const DragonItem = ({ name, type, createdAt }) => {
+  const date = new Date(createdAt).toLocaleDateString('en-US');
+  return (
+    <Item>
+      <Name>{name} <Type>{type}</Type></Name>
+      <StyledDate>{date}</StyledDate>
+    </Item>
+  );
+};
 
 const Dashboard = () => {
   const [dragons, setDragons] = useState([]);
@@ -12,17 +28,12 @@ const Dashboard = () => {
   }, []);
   
   return (
-    <>
+    <Content>
       <h1>Dashboard</h1>
       {dragons.map(dragon => (
-        <div key={dragon.id}>
-          <h2>{dragon.name}</h2>
-          <h2>{dragon.type}</h2>
-          <h2>{dragon.histories}</h2>
-          <h2>{dragon.createdAt}</h2>
-        </div>
+        <DragonItem key={dragon.id} {...dragon} />
       ))}
-    </>
+    </Content>
   );
 };
 
