@@ -1,5 +1,5 @@
 import Dashboard from '.';
-import { act, cleanup, render, screen, fireEvent } from '@testing-library/react';
+import { act, cleanup, render, screen, fireEvent, findAllByRole } from '@testing-library/react';
 import { MemoryRouter } from 'react-router';
 import axios from 'axios';
 import MockAdapter from 'axios-mock-adapter';
@@ -84,5 +84,58 @@ describe('Dashboard', () => {
     expect(name[1]).toBeInTheDocument();
     expect(type[1]).toBeInTheDocument();
     expect(date[1]).toBeInTheDocument();
+  });
+
+  it('renders a edit button for every one dragon item', async () => {
+    mock.onGet(apiURL).reply(200, dragonsSample);
+
+    await renderWithRouterAndWait(<Dashboard />);
+
+    const editButtons = await screen.findAllByLabelText('edit');
+
+    expect(editButtons).toHaveLength(3);
+  });
+
+  it('displays edit page when user click in edit button', async () => {
+    await renderWithRouterAndWait(<Dashboard />);
+
+    const editButtons = await screen.findAllByLabelText('edit');
+    await act(async () => fireEvent.click(editButtons[0]));
+
+    expect(await screen.findByText('Edit Dragon')).toBeInTheDocument();
+  });
+
+  describe('Edit page', () => {
+    const goToEditPage = async () => {
+      const editButtons = await screen.findAllByLabelText('edit');
+      await act(async () => fireEvent.click(editButtons[0]));
+    };
+    
+    it('has a form', async () => {
+      await renderWithRouterAndWait(<Dashboard />);
+      await goToEditPage();
+  
+      expect(await screen.findByRole('form')).toBeInTheDocument();
+    });
+
+    it('renders the right fields', async () => {
+      await renderWithRouterAndWait(<Dashboard />);
+      await goToEditPage();
+
+      expect(await screen.findByLabelText('Name')).toBeInTheDocument();
+      expect(await screen.findByLabelText('Type')).toBeInTheDocument();
+    });
+
+    it('renders field values with dragon details', async () => {
+      mock.onGet(`${apiURL}/1`).reply(200, singleDragon);
+      await renderWithRouterAndWait(<Dashboard />);
+      await goToEditPage();
+
+      const name = await screen.findByLabelText('Name');
+      const type = await screen.findByLabelText('Type');
+
+      expect(name.value).toBe('name1');
+      expect(type.value).toBe('type1');
+    });
   });
 });

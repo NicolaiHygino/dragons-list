@@ -1,13 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import { useHistory, useParams } from 'react-router';
-import { HiOutlineArrowNarrowLeft } from 'react-icons/hi';
+import Modal from 'components/Modal';
+import { useParams } from 'react-router';
 import {
-  Background,
-  Modal,
-  Header,
-  Content,
-  BackButton,
   Name,
   Type,
 } from './style';
@@ -18,7 +13,6 @@ const Details = () => {
   const [details, setDetails] = useState();
   const [loading, setLoading] = useState(true);
 
-  let history = useHistory();
   let { id } = useParams();
   
   useEffect(() => {
@@ -31,32 +25,22 @@ const Details = () => {
 
   if (loading) {
     return (
-      <Background onClick={() => history.push('/')}>
+      <Modal>
         <p>Loading</p>
-      </Background>
+      </Modal>
     );
   };
   
   const date = new Date(details.createdAt).toLocaleDateString('en-US');
 
   return (
-    <Background onClick={() => history.push('/')}>
-      <Modal onClick={e => e.stopPropagation()}>
-        <Header>
-          <h2>Dragon Details</h2>
-          <BackButton onClick={() => history.push('/')}>
-            <HiOutlineArrowNarrowLeft /> Back
-          </BackButton>
-        </Header>
-        <Content>
-          <Name data-testid="details-name">{details.name}</Name>
-          <Type data-testid="details-type">
-            <span>{details.type}</span>
-          </Type>
-          <p data-testid="details-createdAt">{date}</p>
-        </Content>
-      </Modal>
-    </Background>
+    <Modal title="Dragon Details">
+      <Name data-testid="details-name">{details.name}</Name>
+      <Type data-testid="details-type">
+        <span>{details.type}</span>
+      </Type>
+      <p data-testid="details-createdAt">{date}</p>
+    </Modal>
   );
 };
 

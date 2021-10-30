@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import Details from 'views/Details';
+import Edit from 'views/Edit';
 import { Link, Switch, Route } from 'react-router-dom';
+import { useHistory } from 'react-router';
 import axios from 'axios';
 import {
   Content,
@@ -12,12 +14,26 @@ import {
 
 const apiURL = 'http://5c4b2a47aa8ee500142b4887.mockapi.io/api/v1/dragon';
 
-const DragonItem = ({ name, type, createdAt }) => {
+const DragonItem = ({ id, name, type, createdAt }) => {
+  let history = useHistory();
+  
   const date = new Date(createdAt).toLocaleDateString('en-US');
+  
   return (
-    <Item>
+    <Item 
+      data-testid="dragon-item"
+      onClick={() => history.push(`/details/${id}`)}
+    >
       <Name>{name} <Type>{type}</Type></Name>
       <StyledDate>{date}</StyledDate>
+      <div onClick={e => e.stopPropagation()}>
+        <button 
+          aria-label="edit"
+          onClick={() => history.push(`/edit/${id}`)}
+        >
+          Edit
+        </button>
+      </div>
     </Item>
   );
 };
@@ -33,14 +49,13 @@ const Dashboard = () => {
     <>
       <Content>
         <h1>Dashboard</h1>
-        {dragons.map(dragon => (
-          <Link key={dragon.id} to={`/dragon/${dragon.id}`} data-testid="dragon-item">
-            <DragonItem {...dragon} />
-          </Link>
-        ))}
+        {dragons.map(dragon => <DragonItem key={dragon.id} {...dragon} />)}
       </Content>
       <Switch>
-        <Route path="/dragon/:id">
+        <Route path="/edit/:id">
+          <Edit />
+        </Route>
+        <Route path="/details/:id">
           <Details />
         </Route>
       </Switch>
