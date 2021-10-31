@@ -123,6 +123,90 @@ describe('Dashboard', () => {
     expect(await screen.findByText('New Dragon')).toBeInTheDocument();
   });
 
+  describe('Add New Page', () => {
+    const goToAddNewPage = async () => {
+      const addButton = screen.getByText('Add New Dragon');
+      await act(async () => userEvent.click(addButton));
+    };
+
+    const change = (field, text) => {
+      userEvent.clear(field);
+      userEvent.type(field, text);
+    };
+
+    it('has a form', async () => {
+      mock.onGet().reply(200, dragonsSample);
+      await renderWithRouterAndWait(<Dashboard />);
+      await goToAddNewPage();
+  
+      expect(await screen.findByRole('form')).toBeInTheDocument();
+    });
+
+    it('renders the right fields', async () => {
+      mock.onGet().reply(200, dragonsSample);
+      await renderWithRouterAndWait(<Dashboard />);
+      await goToAddNewPage();
+
+      expect(await screen.findByLabelText('Name')).toBeInTheDocument();
+      expect(await screen.findByLabelText('Histories')).toBeInTheDocument();
+      expect(await screen.findByLabelText('Type')).toBeInTheDocument();
+    });
+
+    it('calls the api with the new data on submit', async () => {
+      const newDragon = {
+        createdAt: '2021-01-01T22:58:29.625Z',
+        name: 'newdragon4',
+        type: 'newtype4',
+        histories: 'newhistories4',
+        id: '4',
+      };
+      
+      mock.onPost().reply(200, newDragon);
+      mock.onGet().reply(200, dragonsSample);
+      await renderWithRouterAndWait(<Dashboard />);
+      await goToAddNewPage();
+
+      change(await screen.findByLabelText('Name'), 'newdragon4');
+      change(await screen.findByLabelText('Type'), 'newtype4');
+      change(await screen.findByLabelText('Histories'), 'newhistories4');
+      userEvent.click(await screen.findByText('Save'));
+
+      await waitFor(() => {
+        expect(JSON.parse(mock.history.post[0].data)).toMatchObject({
+          name: 'newdragon4', 
+          type:'newtype4',
+          histories: 'newhistories4',
+        });
+      });
+    });
+
+    it("shows new dragon's name on successfully submitted", async () => {
+      const newDragon = {
+        createdAt: '2021-01-01T22:58:29.625Z',
+        name: 'newdragon4',
+        type: 'newtype4',
+        histories: 'newhistories4',
+        id: '4',
+      };
+      
+      mock.onPost().reply(200, newDragon);
+      mock.onGet('/1').reply(200, singleDragon);
+      mock.onGet().reply(200, dragonsSample);
+      await renderWithRouterAndWait(<Dashboard />);
+      await goToAddNewPage();
+
+      change(await screen.findByLabelText('Name'), 'newdragon4');
+      change(await screen.findByLabelText('Type'), 'newtype4');
+      change(await screen.findByLabelText('Histories'), 'newhistories4');
+      
+      await act(async () => {
+        userEvent.click(await screen.findByText('Save'));
+      });
+
+      expect(await screen.findByText('newdragon4')).toBeInTheDocument();
+    });
+  });
+
   describe('Edit page', () => {
     const goToEditPage = async () => {
       const editButtons = await screen.findAllByLabelText('edit');

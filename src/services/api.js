@@ -17,3 +17,7 @@ export const apiGetDragon = async (id) => {
 export const apiEditDragon = async (id, values) => {
   return await api.put(`/${id}`, values);
 };
+
+export const apiCreateNewDragon = async (values) => {
+  return await api.post('', values);
+};

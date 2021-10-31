@@ -54,7 +54,7 @@ const Dashboard = () => {
     apiGetAllDragons().then(({ data }) => {
       dispatch(addDragons(data));
     });
-  }, []);
+  }, [dispatch]);
   
   return (
     <>

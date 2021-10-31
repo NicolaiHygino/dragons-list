@@ -1,5 +1,3 @@
-import { MdPendingActions } from "react-icons/md";
-
 export const initialState = {
   dragons: [],
 };
@@ -11,6 +9,11 @@ export const addDragons = (dragons) => ({
 
 export const editDragon = (dragon) => ({
   type: "EDIT_DRAGON",
+  dragon,
+});
+
+export const newDragon = (dragon) => ({
+  type: "NEW_DRAGON",
   dragon,
 });
 
@@ -28,7 +31,11 @@ export const dragonsReducer = (state = initialState, action) => {
           }
           return dragon;
         })
-      }
+      };
+    case 'NEW_DRAGON':
+      return {
+        dragons: [...state.dragons, action.dragon]
+      };
     default:
       throw new Error(`"${action.type}" action type does not exists.`);
   }
