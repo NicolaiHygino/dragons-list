@@ -16,7 +16,8 @@ export const Background = styled.div`
   width: 100vw;
   height: 100vh;
 
-  background-color: rgba(7, 118, 66, .3);
+  background-color: rgba(57, 17, 91, .5);
+  backdrop-filter: blur(1px);
 `;
 
 export const StyledModal = styled.section`
