@@ -1,5 +1,6 @@
 import Dashboard from '.';
-import { act, render, screen, fireEvent, waitFor } from '@testing-library/react';
+import { DragonsProvider } from 'context/Dragons';
+import { act, render, screen, fireEvent, waitFor, findByText } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { MemoryRouter } from 'react-router';
 import { api } from 'services/api';
@@ -30,7 +31,9 @@ describe('Dashboard', () => {
     act(async () => {
       render(
         <MemoryRouter>
-          <Dashboard />
+          <DragonsProvider>
+            <Dashboard />
+          </DragonsProvider>
         </MemoryRouter>
       );
     });
@@ -106,6 +109,11 @@ describe('Dashboard', () => {
       const editButtons = await screen.findAllByLabelText('edit');
       await act(async () => fireEvent.click(editButtons[0]));
     };
+
+    const change = (field, text) => {
+      userEvent.clear(field);
+      userEvent.type(field, text);
+    };
     
     it('has a form', async () => {
       mock.onGet().reply(200, dragonsSample);
@@ -147,18 +155,10 @@ describe('Dashboard', () => {
       await renderWithRouterAndWait(<Dashboard />);
       await goToEditPage();
 
-      const name = await screen.findByLabelText('Name');
-      const type = await screen.findByLabelText('Type');
-      const histories = await screen.findByLabelText('Histories');
-      const submitBtn = await screen.findByText('Save');
-      
-      userEvent.clear(name);
-      userEvent.type(name, 'newdragon1');
-      userEvent.clear(type);
-      userEvent.type(type, 'newtype1');
-      userEvent.clear(histories);
-      userEvent.type(histories, 'newhistories1');
-      userEvent.click(submitBtn);
+      change(await screen.findByLabelText('Name'), 'newdragon1');
+      change(await screen.findByLabelText('Type'), 'newtype1');
+      change(await screen.findByLabelText('Histories'), 'newhistories1');
+      userEvent.click(await screen.findByText('Save'));
 
       await waitFor(() => {
         expect(JSON.parse(mock.history.put[0].data)).toMatchObject({
@@ -167,6 +167,21 @@ describe('Dashboard', () => {
           histories: 'newhistories1',
         });
       });
+    });
+
+    it.skip("shows new dragon's name on seccessfully submitted", async () => {
+      mock.onPut('/1').reply(200, { name: 'newdragon1', type:'newtype1' });
+      mock.onGet('/1').reply(200, singleDragon);
+      mock.onGet().reply(200, dragonsSample);
+      await renderWithRouterAndWait(<Dashboard />);
+      await goToEditPage();
+
+      change(await screen.findByLabelText('Name'), 'newdragon1');
+      change(await screen.findByLabelText('Type'), 'newtype1');
+      change(await screen.findByLabelText('Histories'), 'newhistories1');
+      userEvent.click(await screen.findByText('Save'));
+  
+      expect(await findByText('newdragon1')).toBeInTheDocument();
     });
   });
 });

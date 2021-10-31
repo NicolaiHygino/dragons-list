@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import Details from 'views/Details';
 import Edit from 'views/Edit';
+import { useDragons } from 'context/Dragons';
+import { addDragons } from 'context/Dragons/dragonsReducer';
 import { Switch, Route } from 'react-router-dom';
 import { useHistory } from 'react-router';
 import { getAllDragons } from 'services/api';
@@ -43,10 +45,13 @@ const DragonItem = ({ id, name, type, createdAt }) => {
 };
 
 const Dashboard = () => {
-  const [dragons, setDragons] = useState([]);
+  const [state, dispatch] = useDragons();
+  const { dragons } = state;
 
   useEffect(() => {
-    getAllDragons().then(res => setDragons(res.data));
+    getAllDragons().then(({ data }) => {
+      dispatch(addDragons(data));
+    });
   }, []);
   
   return (

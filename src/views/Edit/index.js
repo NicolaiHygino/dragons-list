@@ -3,7 +3,7 @@ import Modal from 'components/Modal';
 import { Formik, Field } from 'formik';
 import * as Yup from 'yup';
 import { getDragon, editDragon } from 'services/api';
-import { useParams } from 'react-router';
+import { useHistory, useParams } from 'react-router';
 import {
   FieldWrapper,
   Label,
@@ -14,10 +14,13 @@ import { Button } from 'globalStyles';
 
 const Edit = () => {
   const [dragon, setDragon] = useState();
+
+  const history = useHistory();
   const { id } = useParams();
 
   const handleSubmit = (values) => {
     editDragon(id, values);
+    history.push('/');
   }
 
   useEffect(() => {
