@@ -6,14 +6,14 @@ export const api = axios.create({
   baseURL: apiURL,
 });
 
-export const getAllDragons = async () => {
+export const apiGetAllDragons = async () => {
   return await api.get();
 };
 
-export const getDragon = async (id) => {
+export const apiGetDragon = async (id) => {
   return await api.get(`/${id}`);
 };
 
-export const editDragon = async (id, values) => {
+export const apiEditDragon = async (id, values) => {
   return await api.put(`/${id}`, values);
 };

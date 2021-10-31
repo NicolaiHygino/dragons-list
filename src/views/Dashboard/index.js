@@ -5,7 +5,7 @@ import { useDragons } from 'context/Dragons';
 import { addDragons } from 'context/Dragons/dragonsReducer';
 import { Switch, Route } from 'react-router-dom';
 import { useHistory } from 'react-router';
-import { getAllDragons } from 'services/api';
+import { apiGetAllDragons } from 'services/api';
 import { MdModeEdit } from 'react-icons/md';
 import {
   Content,
@@ -49,7 +49,7 @@ const Dashboard = () => {
   const { dragons } = state;
 
   useEffect(() => {
-    getAllDragons().then(({ data }) => {
+    apiGetAllDragons().then(({ data }) => {
       dispatch(addDragons(data));
     });
   }, []);

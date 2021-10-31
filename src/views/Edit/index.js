@@ -1,8 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import Modal from 'components/Modal';
+import { useDragons } from 'context/Dragons';
+import { editDragon } from 'context/Dragons/dragonsReducer';
 import { Formik, Field } from 'formik';
 import * as Yup from 'yup';
-import { getDragon, editDragon } from 'services/api';
+import { apiGetDragon, apiEditDragon } from 'services/api';
 import { useHistory, useParams } from 'react-router';
 import {
   FieldWrapper,
@@ -14,17 +16,20 @@ import { Button } from 'globalStyles';
 
 const Edit = () => {
   const [dragon, setDragon] = useState();
+  const [, dispatch] = useDragons();
 
   const history = useHistory();
   const { id } = useParams();
 
   const handleSubmit = (values) => {
-    editDragon(id, values);
+    values.id = id;
+    apiEditDragon(id, values);
+    dispatch(editDragon(values));
     history.push('/');
   }
 
   useEffect(() => {
-    getDragon(id).then(res => {
+    apiGetDragon(id).then(res => {
       setDragon(res.data);
     });
   }, [id]);

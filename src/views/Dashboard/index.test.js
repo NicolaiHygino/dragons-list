@@ -169,7 +169,7 @@ describe('Dashboard', () => {
       });
     });
 
-    it.skip("shows new dragon's name on seccessfully submitted", async () => {
+    it("shows new dragon's name on successfully submitted", async () => {
       mock.onPut('/1').reply(200, { name: 'newdragon1', type:'newtype1' });
       mock.onGet('/1').reply(200, singleDragon);
       mock.onGet().reply(200, dragonsSample);
@@ -179,9 +179,12 @@ describe('Dashboard', () => {
       change(await screen.findByLabelText('Name'), 'newdragon1');
       change(await screen.findByLabelText('Type'), 'newtype1');
       change(await screen.findByLabelText('Histories'), 'newhistories1');
-      userEvent.click(await screen.findByText('Save'));
-  
-      expect(await findByText('newdragon1')).toBeInTheDocument();
+      
+      await act(async () => {
+        userEvent.click(await screen.findByText('Save'));
+      });
+
+      expect(await screen.findByText('newdragon1')).toBeInTheDocument();
     });
   });
 });

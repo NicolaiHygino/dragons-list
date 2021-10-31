@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import Modal from 'components/Modal';
 import { useParams } from 'react-router';
-import { getDragon } from 'services/api';
+import { apiGetDragon } from 'services/api';
 import {
   Name,
   Type,
@@ -15,7 +15,7 @@ const Details = () => {
   let { id } = useParams();
 
   useEffect(() => {
-    getDragon(id).then(res => {
+    apiGetDragon(id).then(res => {
       setDetails(res.data);
       setLoading(false);
     });
