@@ -1,6 +1,6 @@
 import Dashboard from '.';
 import { DragonsProvider } from 'context/Dragons';
-import { act, render, screen, fireEvent, waitFor, findByText, findAllByText } from '@testing-library/react';
+import { act, render, screen, fireEvent, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { MemoryRouter } from 'react-router';
 import { api } from 'services/api';
@@ -22,7 +22,27 @@ const singleDragon = {
   id: '1',
 };
 
+const newDragon = {
+  createdAt: '2021-01-01T22:58:29.625Z',
+  name: 'newdragon4',
+  type: 'newtype4',
+  histories: 'newhistories4',
+  id: '4',
+};
+
 describe('Dashboard', () => {
+  beforeEach(() => {
+    mock.onDelete('/1').reply(200, singleDragon);
+    mock.onPut('/1').reply(200, { 
+      name: 'newdragon1', 
+      type:'newtype1', 
+      histories: 'histories1'
+    });
+    mock.onPost().reply(200, newDragon);
+    mock.onGet('/1').reply(200, singleDragon);
+    mock.onGet().reply(200, dragonsSample);
+  });
+  
   afterEach(() => {
     mock.reset();
   });
@@ -39,7 +59,6 @@ describe('Dashboard', () => {
     });
 
   it('load dragons when component mount', async () => {    
-    mock.onGet().reply(200, dragonsSample);
     await renderWithRouterAndWait(<Dashboard />);
 
     expect(await screen.findByText('name1')).toBeInTheDocument();
@@ -48,7 +67,6 @@ describe('Dashboard', () => {
   });
 
   it('display dragons names alphabetically', async () => {
-    mock.onGet().reply(200, dragonsSample);
     await renderWithRouterAndWait(<Dashboard />);
 
     const namesList = await screen.findAllByTestId('dragon-item-name');
@@ -59,7 +77,6 @@ describe('Dashboard', () => {
   });
 
   it('display dragon item creation date formatted', async () => {
-    mock.onGet().reply(200, dragonsSample);
     await renderWithRouterAndWait(<Dashboard />);
 
     expect(await screen.findByText('1/1/2021')).toBeInTheDocument();
@@ -68,7 +85,6 @@ describe('Dashboard', () => {
   });
 
   it('shows dragon details when we click on an item', async () => {
-    mock.onGet().reply(200, dragonsSample);
     await renderWithRouterAndWait(<Dashboard />);
 
     const items = await screen.findAllByTestId('dragon-item');
@@ -78,8 +94,6 @@ describe('Dashboard', () => {
   });
 
   it('should display dragon details with right data', async () => {
-    mock.onGet('/1').reply(200, singleDragon);
-    mock.onGet().reply(200, dragonsSample);
     await renderWithRouterAndWait(<Dashboard />);
     
     const items = await screen.findAllByTestId('dragon-item');
@@ -97,7 +111,6 @@ describe('Dashboard', () => {
   });
 
   it('renders a edit button for every one dragon item', async () => {
-    mock.onGet().reply(200, dragonsSample);
     await renderWithRouterAndWait(<Dashboard />);
 
     const editButtons = await screen.findAllByLabelText('edit');
@@ -105,8 +118,25 @@ describe('Dashboard', () => {
     expect(editButtons).toHaveLength(3);
   });
 
+  it.skip('renders a delete button for every one dragon item', async () => {
+    await renderWithRouterAndWait(<Dashboard />);
+
+    const delButtons = await screen.findAllByLabelText('delete');
+
+    expect(delButtons).toHaveLength(3);
+  });
+
+  it.skip('deletes the respective dragon when we click the delete button', async () => {
+    await renderWithRouterAndWait(<Dashboard />);
+
+    const delButtons = await screen.findAllByLabelText('delete');
+    await act(() => userEvent.click(delButtons[0]));
+    
+    expect(mock.history.delete.length).toBe(1);
+    expect(screen.queryByText('name1')).toBe(null);
+  });
+
   it('renders a add new dragon button', async () => {
-    mock.onGet().reply(200, dragonsSample);
     await renderWithRouterAndWait(<Dashboard />);
 
     const addButton = await screen.findByText('Add New Dragon');
@@ -115,7 +145,6 @@ describe('Dashboard', () => {
   });
 
   it('displays edit page when user click in edit button', async () => {
-    mock.onGet().reply(200, dragonsSample);
     await renderWithRouterAndWait(<Dashboard />);
 
     const editButtons = await screen.findAllByLabelText('edit');
@@ -125,7 +154,6 @@ describe('Dashboard', () => {
   });
 
   it('displays add new page when user click in add new button', async () => {
-    mock.onGet().reply(200, dragonsSample);
     await renderWithRouterAndWait(<Dashboard />);
 
     const addButton = await screen.findByText('Add New Dragon');
@@ -146,7 +174,6 @@ describe('Dashboard', () => {
     };
 
     it('has a form', async () => {
-      mock.onGet().reply(200, dragonsSample);
       await renderWithRouterAndWait(<Dashboard />);
       await goToAddNewPage();
   
@@ -154,7 +181,6 @@ describe('Dashboard', () => {
     });
 
     it('renders the right fields', async () => {
-      mock.onGet().reply(200, dragonsSample);
       await renderWithRouterAndWait(<Dashboard />);
       await goToAddNewPage();
 
@@ -164,16 +190,6 @@ describe('Dashboard', () => {
     });
 
     it('calls the api with the new data on submit', async () => {
-      const newDragon = {
-        createdAt: '2021-01-01T22:58:29.625Z',
-        name: 'newdragon4',
-        type: 'newtype4',
-        histories: 'newhistories4',
-        id: '4',
-      };
-      
-      mock.onPost().reply(200, newDragon);
-      mock.onGet().reply(200, dragonsSample);
       await renderWithRouterAndWait(<Dashboard />);
       await goToAddNewPage();
 
@@ -192,17 +208,6 @@ describe('Dashboard', () => {
     });
 
     it("shows new dragon's name on successfully submitted", async () => {
-      const newDragon = {
-        createdAt: '2021-01-01T22:58:29.625Z',
-        name: 'newdragon4',
-        type: 'newtype4',
-        histories: 'newhistories4',
-        id: '4',
-      };
-      
-      mock.onPost().reply(200, newDragon);
-      mock.onGet('/1').reply(200, singleDragon);
-      mock.onGet().reply(200, dragonsSample);
       await renderWithRouterAndWait(<Dashboard />);
       await goToAddNewPage();
 
@@ -218,8 +223,6 @@ describe('Dashboard', () => {
     });
 
     it('shows required message if submitted empty', async () => {
-      mock.onGet('/1').reply(200, singleDragon);
-      mock.onGet().reply(200, dragonsSample);
       await renderWithRouterAndWait(<Dashboard />);
       await goToAddNewPage();
 
@@ -245,7 +248,6 @@ describe('Dashboard', () => {
     };
     
     it('has a form', async () => {
-      mock.onGet().reply(200, dragonsSample);
       await renderWithRouterAndWait(<Dashboard />);
       await goToEditPage();
   
@@ -253,7 +255,6 @@ describe('Dashboard', () => {
     });
 
     it('renders the right fields', async () => {
-      mock.onGet().reply(200, dragonsSample);
       await renderWithRouterAndWait(<Dashboard />);
       await goToEditPage();
 
@@ -263,8 +264,6 @@ describe('Dashboard', () => {
     });
 
     it('renders field values with dragon details', async () => {
-      mock.onGet('/1').reply(200, singleDragon);
-      mock.onGet().reply(200, dragonsSample);
       await renderWithRouterAndWait(<Dashboard />);
       await goToEditPage();
 
@@ -278,9 +277,6 @@ describe('Dashboard', () => {
     });
 
     it('calls the api with the new data on submit', async () => {
-      mock.onPut('/1').reply(200, { name: 'newdragon1', type:'newtype1' });
-      mock.onGet('/1').reply(200, singleDragon);
-      mock.onGet().reply(200, dragonsSample);
       await renderWithRouterAndWait(<Dashboard />);
       await goToEditPage();
 
@@ -299,9 +295,6 @@ describe('Dashboard', () => {
     });
 
     it("shows new dragon's name on successfully submitted", async () => {
-      mock.onPut('/1').reply(200, { name: 'newdragon1', type:'newtype1' });
-      mock.onGet('/1').reply(200, singleDragon);
-      mock.onGet().reply(200, dragonsSample);
       await renderWithRouterAndWait(<Dashboard />);
       await goToEditPage();
 
