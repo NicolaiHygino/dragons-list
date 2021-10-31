@@ -1,18 +1,14 @@
 import Dashboard from '.';
-import { act, cleanup, render, screen, fireEvent, findAllByRole } from '@testing-library/react';
+import { act, render, screen, fireEvent } from '@testing-library/react';
 import { MemoryRouter } from 'react-router';
-import axios from 'axios';
+import { api } from 'services/api';
 import MockAdapter from 'axios-mock-adapter';
 
-const apiURL = 'http://5c4b2a47aa8ee500142b4887.mockapi.io/api/v1/dragon';
-
-const mock = new MockAdapter(axios, { onNoMatch: 'throwException' });
+const mock = new MockAdapter(api, { onNoMatch: "throwException" });
 
 beforeAll(() => {
   mock.reset();
 });
-
-afterEach(cleanup);
 
 const dragonsSample = [
   {createdAt: '2021-01-01T22:58:29.625Z', name: 'name1', type: 'type1', histories: 'histories1', id: '1'},
@@ -29,6 +25,15 @@ const singleDragon = {
 };
 
 describe('Dashboard', () => {
+  beforeEach(() => {
+    mock.onGet('/1').reply(200, singleDragon);
+    mock.onGet().reply(200, dragonsSample);
+  });
+  
+  afterEach(() => {
+    mock.resetHandlers();
+  });
+  
   const renderWithRouterAndWait = () => 
     act(async () => {
       render(
@@ -38,9 +43,7 @@ describe('Dashboard', () => {
       );
     });
 
-  it('load dragons when component mount', async () => {
-    mock.onGet(apiURL).reply(200, dragonsSample);
-    
+  it('load dragons when component mount', async () => {    
     await renderWithRouterAndWait(<Dashboard />);
 
     expect(await screen.findByText('name1')).toBeInTheDocument();
@@ -49,8 +52,6 @@ describe('Dashboard', () => {
   });
 
   it('display dragon item creation date formatted', async () => {
-    mock.onGet(apiURL).reply(200, dragonsSample);
-
     await renderWithRouterAndWait(<Dashboard />);
 
     expect(await screen.findByText('1/1/2021')).toBeInTheDocument();
@@ -59,8 +60,6 @@ describe('Dashboard', () => {
   });
 
   it('shows dragon details when we click on an item', async () => {
-    mock.onGet(`${apiURL}/1`).reply(200, singleDragon);
-
     await renderWithRouterAndWait(<Dashboard />);
 
     const items = await screen.findAllByTestId('dragon-item');
@@ -70,8 +69,6 @@ describe('Dashboard', () => {
   });
 
   it('should display dragon details with right data', async () => {
-    mock.onGet(`${apiURL}/1`).reply(200, singleDragon);
-    
     await renderWithRouterAndWait(<Dashboard />);
     
     const items = await screen.findAllByTestId('dragon-item');
@@ -87,8 +84,6 @@ describe('Dashboard', () => {
   });
 
   it('renders a edit button for every one dragon item', async () => {
-    mock.onGet(apiURL).reply(200, dragonsSample);
-
     await renderWithRouterAndWait(<Dashboard />);
 
     const editButtons = await screen.findAllByLabelText('edit');
@@ -127,7 +122,6 @@ describe('Dashboard', () => {
     });
 
     it('renders field values with dragon details', async () => {
-      mock.onGet(`${apiURL}/1`).reply(200, singleDragon);
       await renderWithRouterAndWait(<Dashboard />);
       await goToEditPage();
 

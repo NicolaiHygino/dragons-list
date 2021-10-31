@@ -1,26 +1,23 @@
 import React, { useState, useEffect } from 'react';
-import axios from 'axios';
 import Modal from 'components/Modal';
 import { useParams } from 'react-router';
+import { getDragon } from 'services/api';
 import {
   Name,
   Type,
 } from './style';
-
-const apiURL = 'http://5c4b2a47aa8ee500142b4887.mockapi.io/api/v1/dragon';
 
 const Details = () => {
   const [details, setDetails] = useState();
   const [loading, setLoading] = useState(true);
 
   let { id } = useParams();
-  
+
   useEffect(() => {
-    axios.get(`${apiURL}/${id}`)
-      .then(res => {
-        setDetails(res.data)
-        setLoading(false);
-      });
+    getDragon(id).then(res => {
+      setDetails(res.data);
+      setLoading(false);
+    });
   }, [id]);
 
   if (loading) {

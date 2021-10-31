@@ -1,19 +1,17 @@
 import React, { useState, useEffect } from 'react';
 import Modal from 'components/Modal';
 import { Formik, Form, Field, ErrorMessage } from 'formik';
-import axios from 'axios';
+import { getDragon } from 'services/api';
 import { useParams } from 'react-router';
-
-const apiURL = 'http://5c4b2a47aa8ee500142b4887.mockapi.io/api/v1/dragon';
 
 const Edit = () => {
   const [dragon, setDragon] = useState();
   const { id } = useParams();
   
   useEffect(() => {
-    axios.get(`${apiURL}/${id}`).then(res => {
+    getDragon(id).then(res => {
       setDragon(res.data);
-    })
+    });
   }, [id]);
   
   if (!dragon) return <p>loading</p>;

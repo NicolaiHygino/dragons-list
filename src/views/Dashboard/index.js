@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import Details from 'views/Details';
 import Edit from 'views/Edit';
-import { Link, Switch, Route } from 'react-router-dom';
+import { Switch, Route } from 'react-router-dom';
 import { useHistory } from 'react-router';
-import axios from 'axios';
+import { getAllDragons } from 'services/api';
 import {
   Content,
   Item,
@@ -11,8 +11,6 @@ import {
   Type,
   StyledDate,
 } from './style';
-
-const apiURL = 'http://5c4b2a47aa8ee500142b4887.mockapi.io/api/v1/dragon';
 
 const DragonItem = ({ id, name, type, createdAt }) => {
   let history = useHistory();
@@ -42,7 +40,7 @@ const Dashboard = () => {
   const [dragons, setDragons] = useState([]);
 
   useEffect(() => {
-    axios.get(apiURL).then(res => setDragons(res.data));
+    getAllDragons().then(res => setDragons(res.data));
   }, []);
   
   return (
