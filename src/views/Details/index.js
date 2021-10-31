@@ -5,6 +5,7 @@ import { getDragon } from 'services/api';
 import {
   Name,
   Type,
+  Histories,
 } from './style';
 
 const Details = () => {
@@ -36,6 +37,7 @@ const Details = () => {
       <Type data-testid="details-type">
         <span>{details.type}</span>
       </Type>
+      <Histories>{details.histories}</Histories>
       <p data-testid="details-createdAt">{date}</p>
     </Modal>
   );

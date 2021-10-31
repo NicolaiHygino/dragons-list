@@ -73,10 +73,12 @@ describe('Dashboard', () => {
 
     const name = await screen.findAllByText('name1');
     const type = await screen.findAllByText('type1');
+    const histories = await screen.findByText('histories1');
     const date = await screen.findAllByText('1/1/2021');
     
     expect(name[1]).toBeInTheDocument();
     expect(type[1]).toBeInTheDocument();
+    expect(histories).toBeInTheDocument();
     expect(date[1]).toBeInTheDocument();
   });
 
@@ -119,6 +121,7 @@ describe('Dashboard', () => {
       await goToEditPage();
 
       expect(await screen.findByLabelText('Name')).toBeInTheDocument();
+      expect(await screen.findByLabelText('Histories')).toBeInTheDocument();
       expect(await screen.findByLabelText('Type')).toBeInTheDocument();
     });
 
@@ -130,9 +133,11 @@ describe('Dashboard', () => {
 
       const name = await screen.findByLabelText('Name');
       const type = await screen.findByLabelText('Type');
+      const histories = await screen.findByLabelText('Histories');
 
       expect(name.value).toBe('name1');
       expect(type.value).toBe('type1');
+      expect(histories.value).toBe('histories1');
     });
 
     it('calls the api with the new data on submit', async () => {
@@ -144,18 +149,22 @@ describe('Dashboard', () => {
 
       const name = await screen.findByLabelText('Name');
       const type = await screen.findByLabelText('Type');
+      const histories = await screen.findByLabelText('Histories');
       const submitBtn = await screen.findByText('Save');
       
       userEvent.clear(name);
       userEvent.type(name, 'newdragon1');
       userEvent.clear(type);
       userEvent.type(type, 'newtype1');
+      userEvent.clear(histories);
+      userEvent.type(histories, 'newhistories1');
       userEvent.click(submitBtn);
 
       await waitFor(() => {
         expect(JSON.parse(mock.history.put[0].data)).toMatchObject({
           name: 'newdragon1', 
           type:'newtype1',
+          histories: 'newhistories1',
         });
       });
     });

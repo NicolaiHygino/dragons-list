@@ -1,12 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import Modal from 'components/Modal';
-import { Formik, Form } from 'formik';
+import { Formik, Field } from 'formik';
 import * as Yup from 'yup';
 import { getDragon, editDragon } from 'services/api';
 import { useParams } from 'react-router';
 import {
   FieldWrapper,
   Label,
+  StyledForm,
   StyledField,
 } from './style';
 import { Button } from 'globalStyles';
@@ -14,7 +15,7 @@ import { Button } from 'globalStyles';
 const Edit = () => {
   const [dragon, setDragon] = useState();
   const { id } = useParams();
-  
+
   const handleSubmit = (values) => {
     editDragon(id, values);
   }
@@ -36,11 +37,15 @@ const Edit = () => {
   return (
     <Modal title="Edit Dragon">
       <Formik
-        initialValues={{name: dragon.name, type: dragon.type }}
+        initialValues={{
+          name: dragon.name, 
+          type: dragon.type,
+          histories: dragon.histories, 
+        }}
         validationSchema={Yup.object({})}
         onSubmit={values => handleSubmit(values)}
       >
-        <Form aria-label="form">
+        <StyledForm aria-label="form">
           <FieldWrapper>
             <Label htmlFor="name">Name</Label>
             <StyledField id="name" name="name" type="text" />
@@ -51,8 +56,13 @@ const Edit = () => {
             <StyledField id="type" name="type" type="text" />
           </FieldWrapper>
 
+          <FieldWrapper>
+            <Label htmlFor="histories">Histories</Label>
+            <Field id="histories" name="histories" as="textarea" />
+          </FieldWrapper>
+
           <Button type="submit">Save</Button>
-        </Form>
+        </StyledForm>
       </Formik>
     </Modal>
   );

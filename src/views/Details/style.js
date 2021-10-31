@@ -15,3 +15,7 @@ export const Type = styled.p`
     padding: 0 3px;
   }
 `;
+
+export const Histories = styled.p`
+  margin: 15px 0;
+`;
