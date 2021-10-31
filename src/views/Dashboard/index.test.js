@@ -1,6 +1,6 @@
 import Dashboard from '.';
 import { DragonsProvider } from 'context/Dragons';
-import { act, render, screen, fireEvent, waitFor, findByText } from '@testing-library/react';
+import { act, render, screen, fireEvent, waitFor, findByText, findAllByText } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { MemoryRouter } from 'react-router';
 import { api } from 'services/api';
@@ -215,6 +215,21 @@ describe('Dashboard', () => {
       });
 
       expect(await screen.findByText('newdragon4')).toBeInTheDocument();
+    });
+
+    it('shows required message if submitted empty', async () => {
+      mock.onGet('/1').reply(200, singleDragon);
+      mock.onGet().reply(200, dragonsSample);
+      await renderWithRouterAndWait(<Dashboard />);
+      await goToAddNewPage();
+
+      await act(async () => {
+        userEvent.click(await screen.findByText('Save'));
+      });
+
+      const requiredMessages = await screen.findAllByText('Required');
+
+      expect(requiredMessages.length).toBe(3);
     });
   });
 

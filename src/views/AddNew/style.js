@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import { Form, Field } from 'formik';
+import { Form, Field, ErrorMessage } from 'formik';
 
 export const StyledForm = styled(Form)`
   & textarea {
@@ -40,4 +40,9 @@ export const StyledField = styled(Field)`
   &:hover {
     background-color: #D8D6D9;
   }
+`;
+
+export const StyledError = styled(ErrorMessage)`
+  color: var(--error);
+  font-size: .9em;
 `;
