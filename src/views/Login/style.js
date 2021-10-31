@@ -31,15 +31,6 @@ export const FieldWrapper = styled.div`
   margin-bottom: 20px;
 `;
 
-export const Button = styled.button`
-  border: 0;
-  border-radius: 3px;
-  background-color: var(--main-color);
-  color: white;
-  padding: .8em;
-  cursor: pointer;
-`;
-
 export const Error = styled.p`
   font-size: .9em;
   color: var(--error);
