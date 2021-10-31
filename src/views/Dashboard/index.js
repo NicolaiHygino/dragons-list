@@ -1,10 +1,10 @@
-import React, { useState, useEffect } from 'react';
+import React, { useEffect } from 'react';
 import Details from 'views/Details';
 import Edit from 'views/Edit';
+import AddNew from 'views/AddNew';
 import { useDragons } from 'context/Dragons';
 import { addDragons } from 'context/Dragons/dragonsReducer';
-import { Switch, Route } from 'react-router-dom';
-import { useHistory } from 'react-router';
+import { Switch, Route, useHistory } from 'react-router-dom';
 import { apiGetAllDragons } from 'services/api';
 import { MdModeEdit } from 'react-icons/md';
 import {
@@ -48,6 +48,8 @@ const Dashboard = () => {
   const [state, dispatch] = useDragons();
   const { dragons } = state;
 
+  const history = useHistory();
+
   useEffect(() => {
     apiGetAllDragons().then(({ data }) => {
       dispatch(addDragons(data));
@@ -57,6 +59,7 @@ const Dashboard = () => {
   return (
     <>
       <Content>
+        <button onClick={() => history.push('/add')}>Add New Dragon</button>
         <h1>Dashboard</h1>
         {dragons.map(dragon => <DragonItem key={dragon.id} {...dragon} />)}
       </Content>
@@ -66,6 +69,9 @@ const Dashboard = () => {
         </Route>
         <Route path="/details/:id">
           <Details />
+        </Route>
+        <Route path="/add">
+          <AddNew />
         </Route>
       </Switch>
     </>

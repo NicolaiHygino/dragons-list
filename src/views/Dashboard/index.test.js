@@ -94,6 +94,15 @@ describe('Dashboard', () => {
     expect(editButtons).toHaveLength(3);
   });
 
+  it('renders a add new dragon button', async () => {
+    mock.onGet().reply(200, dragonsSample);
+    await renderWithRouterAndWait(<Dashboard />);
+
+    const addButton = await screen.findByText('Add New Dragon');
+
+    expect(addButton).toBeInTheDocument();
+  });
+
   it('displays edit page when user click in edit button', async () => {
     mock.onGet().reply(200, dragonsSample);
     await renderWithRouterAndWait(<Dashboard />);
@@ -102,6 +111,16 @@ describe('Dashboard', () => {
     await act(async () => fireEvent.click(editButtons[0]));
 
     expect(await screen.findByText('Edit Dragon')).toBeInTheDocument();
+  });
+
+  it('displays add new page when user click in add new button', async () => {
+    mock.onGet().reply(200, dragonsSample);
+    await renderWithRouterAndWait(<Dashboard />);
+
+    const addButton = await screen.findByText('Add New Dragon');
+    await act(async () => fireEvent.click(addButton));
+
+    expect(await screen.findByText('New Dragon')).toBeInTheDocument();
   });
 
   describe('Edit page', () => {
