@@ -47,12 +47,12 @@ describe('Dashboard', () => {
     mock.reset();
   });
   
-  const renderWithRouterAndWait = () => 
+  const renderWithRouterAndWait = (component, initialEntries = '/') => 
     act(async () => {
       render(
-        <MemoryRouter>
+        <MemoryRouter initialEntries={[initialEntries]}>
           <DragonsProvider>
-            <Dashboard />
+            { component }
           </DragonsProvider>
         </MemoryRouter>
       );
@@ -133,7 +133,9 @@ describe('Dashboard', () => {
     act(() => userEvent.click(delButtons[0]));
     
     expect(mock.history.delete.length).toBe(1);
-    expect(screen.queryByText('name1')).not.toBeInTheDocument();
+    await waitFor(() => {
+      expect(screen.queryByText('name1')).not.toBeInTheDocument();
+    });
   });
 
   it('renders a add new dragon button', async () => {

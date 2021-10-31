@@ -14,7 +14,6 @@ import {
   IconButton,
 } from './style';
 
-
 const ListItem = ({ id, name, type, createdAt }) => {
   const [, dispatch] = useDragons();
 
