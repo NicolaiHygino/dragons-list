@@ -133,7 +133,7 @@ describe('Dashboard', () => {
     act(() => userEvent.click(delButtons[0]));
     
     expect(mock.history.delete.length).toBe(1);
-    expect(await screen.findByText('name1')).not.toBeInTheDocument();
+    expect(screen.queryByText('name1')).not.toBeInTheDocument();
   });
 
   it('renders a add new dragon button', async () => {
