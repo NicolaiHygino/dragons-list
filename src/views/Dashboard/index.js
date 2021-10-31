@@ -4,12 +4,16 @@ import Edit from 'views/Edit';
 import { Switch, Route } from 'react-router-dom';
 import { useHistory } from 'react-router';
 import { getAllDragons } from 'services/api';
+import { MdModeEdit } from 'react-icons/md';
 import {
   Content,
   Item,
+  InfoWrapper,
   Name,
   Type,
   StyledDate,
+  ButtonsWrapper,
+  IconButton,
 } from './style';
 
 const DragonItem = ({ id, name, type, createdAt }) => {
@@ -22,16 +26,18 @@ const DragonItem = ({ id, name, type, createdAt }) => {
       data-testid="dragon-item"
       onClick={() => history.push(`/details/${id}`)}
     >
-      <Name>{name} <Type>{type}</Type></Name>
-      <StyledDate>{date}</StyledDate>
-      <div onClick={e => e.stopPropagation()}>
-        <button 
+      <InfoWrapper>
+        <Name>{name} <Type>{type}</Type></Name>
+        <StyledDate>{date}</StyledDate>
+      </InfoWrapper>
+      <ButtonsWrapper onClick={e => e.stopPropagation()}>
+        <IconButton 
           aria-label="edit"
           onClick={() => history.push(`/edit/${id}`)}
         >
-          Edit
-        </button>
-      </div>
+          <MdModeEdit />
+        </IconButton>
+      </ButtonsWrapper>
     </Item>
   );
 };
