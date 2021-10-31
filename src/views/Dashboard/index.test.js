@@ -9,8 +9,8 @@ import MockAdapter from 'axios-mock-adapter';
 const mock = new MockAdapter(api, { onNoMatch: "throwException" });
 
 const dragonsSample = [
-  {createdAt: '2021-01-01T22:58:29.625Z', name: 'name1', type: 'type1', histories: 'histories1', id: '1'},
   {createdAt: '2021-01-02T22:58:30.625Z', name: 'name2', type: 'type2', histories: 'histories2', id: '2'},
+  {createdAt: '2021-01-01T22:58:29.625Z', name: 'name1', type: 'type1', histories: 'histories1', id: '1'},
   {createdAt: '2021-01-03T22:58:31.625Z', name: 'name3', type: 'type2', histories: 'histories3', id: '3'},
 ];
 
@@ -45,6 +45,17 @@ describe('Dashboard', () => {
     expect(await screen.findByText('name1')).toBeInTheDocument();
     expect(await screen.findByText('name2')).toBeInTheDocument();
     expect(await screen.findByText('name3')).toBeInTheDocument();
+  });
+
+  it('display dragons names alphabetically', async () => {
+    mock.onGet().reply(200, dragonsSample);
+    await renderWithRouterAndWait(<Dashboard />);
+
+    const namesList = await screen.findAllByTestId('dragon-item-name');
+
+    expect(namesList[0].textContent).toContain('name1');
+    expect(namesList[1].textContent).toContain('name2');
+    expect(namesList[2].textContent).toContain('name3');
   });
 
   it('display dragon item creation date formatted', async () => {
