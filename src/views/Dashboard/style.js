@@ -1,6 +1,7 @@
 import styled from 'styled-components';
 
 export const Content = styled.section`
+  position: relative;
   max-width: 500px;
   margin: 30px auto;
   padding: 10px;
@@ -13,7 +14,7 @@ export const Item = styled.div`
   align-items: center;
   justify-content: space-between;
   background: white;
-  margin-bottom: 20px;
+  margin-bottom: 10px;
   border-radius: 2px;
   padding: 10px;
   box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.1), 0 1px 4px 0 rgba(0, 0, 0, 0.1);
@@ -67,4 +68,15 @@ export const IconButton = styled.button`
     color: var(--main-color);
     box-shadow: 0 2px 6px 0 rgba(26, 24, 29, .1), 0 2px 4px 0 rgba(26, 24, 29, .1);
   }
+`;
+
+export const AddNewButton = styled.button`
+  background-color: #452072;
+  width: 100%;
+  font-weight: 600;
+  color: white;
+  border: 0;
+  padding: 1em 1em;
+  cursor: pointer;
+  margin-bottom: 20px;
 `;

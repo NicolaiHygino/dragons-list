@@ -16,6 +16,7 @@ import {
   StyledDate,
   ButtonsWrapper,
   IconButton,
+  AddNewButton,
 } from './style';
 
 const DragonItem = ({ id, name, type, createdAt }) => {
@@ -68,8 +69,9 @@ const Dashboard = () => {
   return (
     <>
       <Content>
-        <button onClick={() => history.push('/add')}>Add New Dragon</button>
-        <h1>Dashboard</h1>
+        <AddNewButton onClick={() => history.push('/add')}>
+          Add New Dragon
+        </AddNewButton>
         {dragons.map(dragon => <DragonItem key={dragon.id} {...dragon} />)}
       </Content>
       <Switch>
