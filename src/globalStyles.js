@@ -2,14 +2,18 @@ import styled, { createGlobalStyle } from "styled-components";
 
 export const GlobalStyle = createGlobalStyle`
   :root {
-    --main-color: #05c46b;
-    --scd-color: #ff5e57;
+    --main-color: #964BF0;
+    --scd-color: #381A5C;
     --error: #c0392b;
     --bg-color: #EDECEE;
   }
 
   * {
     box-sizing: border-box;
+  }
+
+  *:focus {
+    outline: 1px solid var(--main-color);
   }
 
   a {
