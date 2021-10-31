@@ -51,7 +51,7 @@ export const StyledDate = styled.p`
 `;
 
 export const ButtonsWrapper = styled.div`
-
+  
 `;
 
 export const IconButton = styled.button`

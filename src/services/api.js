@@ -13,3 +13,7 @@ export const getAllDragons = async () => {
 export const getDragon = async (id) => {
   return await api.get(`/${id}`);
 };
+
+export const editDragon = async (id, values) => {
+  return await api.put(`/${id}`, values);
+};

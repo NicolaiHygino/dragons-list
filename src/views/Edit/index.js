@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import Modal from 'components/Modal';
 import { Formik, Form } from 'formik';
-import { getDragon } from 'services/api';
+import * as Yup from 'yup';
+import { getDragon, editDragon } from 'services/api';
 import { useParams } from 'react-router';
 import {
   FieldWrapper,
@@ -14,6 +15,10 @@ const Edit = () => {
   const [dragon, setDragon] = useState();
   const { id } = useParams();
   
+  const handleSubmit = (values) => {
+    editDragon(id, values);
+  }
+
   useEffect(() => {
     getDragon(id).then(res => {
       setDragon(res.data);
@@ -32,6 +37,8 @@ const Edit = () => {
     <Modal title="Edit Dragon">
       <Formik
         initialValues={{name: dragon.name, type: dragon.type }}
+        validationSchema={Yup.object({})}
+        onSubmit={values => handleSubmit(values)}
       >
         <Form aria-label="form">
           <FieldWrapper>
