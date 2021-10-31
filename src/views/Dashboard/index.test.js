@@ -118,7 +118,7 @@ describe('Dashboard', () => {
     expect(editButtons).toHaveLength(3);
   });
 
-  it.skip('renders a delete button for every one dragon item', async () => {
+  it('renders a delete button for every one dragon item', async () => {
     await renderWithRouterAndWait(<Dashboard />);
 
     const delButtons = await screen.findAllByLabelText('delete');
@@ -126,14 +126,14 @@ describe('Dashboard', () => {
     expect(delButtons).toHaveLength(3);
   });
 
-  it.skip('deletes the respective dragon when we click the delete button', async () => {
+  it('deletes the respective dragon when we click the delete button', async () => {
     await renderWithRouterAndWait(<Dashboard />);
 
     const delButtons = await screen.findAllByLabelText('delete');
-    await act(() => userEvent.click(delButtons[0]));
+    act(() => userEvent.click(delButtons[0]));
     
     expect(mock.history.delete.length).toBe(1);
-    expect(screen.queryByText('name1')).toBe(null);
+    expect(await screen.findByText('name1')).not.toBeInTheDocument();
   });
 
   it('renders a add new dragon button', async () => {

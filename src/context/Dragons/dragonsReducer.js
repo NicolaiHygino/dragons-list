@@ -17,6 +17,11 @@ export const newDragon = (dragon) => ({
   dragon,
 });
 
+export const deleteDragon = (id) => ({
+  type: 'DELETE_DRAGON',
+  id,
+});
+
 export const dragonsReducer = (state = initialState, action) => {
   switch(action.type) {
     case 'ADD_DRAGONS':
@@ -36,6 +41,10 @@ export const dragonsReducer = (state = initialState, action) => {
       return {
         dragons: [...state.dragons, action.dragon]
       };
+    case 'DELETE_DRAGON':
+      return {
+        dragons: state.dragons.filter(dragon => dragon.id !== action.id),
+      }
     default:
       throw new Error(`"${action.type}" action type does not exists.`);
   }

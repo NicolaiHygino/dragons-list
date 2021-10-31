@@ -21,3 +21,7 @@ export const apiEditDragon = async (id, values) => {
 export const apiCreateNewDragon = async (values) => {
   return await api.post('', values);
 };
+
+export const apiDeleteDragon = async (id) => {
+  return await api.delete(`/${id}`);
+};

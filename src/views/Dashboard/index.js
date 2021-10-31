@@ -3,10 +3,10 @@ import Details from 'views/Details';
 import Edit from 'views/Edit';
 import AddNew from 'views/AddNew';
 import { useDragons } from 'context/Dragons';
-import { addDragons } from 'context/Dragons/dragonsReducer';
+import { addDragons, deleteDragon } from 'context/Dragons/dragonsReducer';
 import { Switch, Route, useHistory } from 'react-router-dom';
-import { apiGetAllDragons } from 'services/api';
-import { MdModeEdit } from 'react-icons/md';
+import { apiGetAllDragons, apiDeleteDragon } from 'services/api';
+import { MdModeEdit, MdDelete } from 'react-icons/md';
 import {
   Content,
   Item,
@@ -20,10 +20,17 @@ import {
 } from './style';
 
 const DragonItem = ({ id, name, type, createdAt }) => {
+  const [, dispatch] = useDragons();
+
   let history = useHistory();
   
   const date = new Date(createdAt).toLocaleDateString('en-US');
   
+  const handleDelete = () => {
+    apiDeleteDragon(id)
+      .then(dispatch(deleteDragon(id)));
+  };
+
   return (
     <Item 
       data-testid="dragon-item"
@@ -39,6 +46,12 @@ const DragonItem = ({ id, name, type, createdAt }) => {
           onClick={() => history.push(`/edit/${id}`)}
         >
           <MdModeEdit />
+        </IconButton>
+        <IconButton 
+          aria-label="delete"
+          onClick={() => handleDelete()}
+        >
+          <MdDelete />
         </IconButton>
       </ButtonsWrapper>
     </Item>
