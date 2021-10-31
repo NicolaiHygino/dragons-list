@@ -23,8 +23,12 @@ const ListItem = ({ id, name, type, createdAt }) => {
   const date = new Date(createdAt).toLocaleDateString('en-US');
   
   const handleDelete = () => {
-    apiDeleteDragon(id)
-      .then(dispatch(deleteDragon(id)));
+    apiDeleteDragon(id).then(() => {
+      dispatch(deleteDragon(id))
+    })
+    .catch(() => {
+      dispatch(deleteDragon(id));
+    });
   };
 
   return (
