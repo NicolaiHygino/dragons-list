@@ -1,8 +1,14 @@
 import React, { useState, useEffect } from 'react';
 import Modal from 'components/Modal';
-import { Formik, Form, Field, ErrorMessage } from 'formik';
+import { Formik, Form } from 'formik';
 import { getDragon } from 'services/api';
 import { useParams } from 'react-router';
+import {
+  FieldWrapper,
+  Label,
+  StyledField,
+} from './style';
+import { Button } from 'globalStyles';
 
 const Edit = () => {
   const [dragon, setDragon] = useState();
@@ -14,7 +20,13 @@ const Edit = () => {
     });
   }, [id]);
   
-  if (!dragon) return <p>loading</p>;
+  if (!dragon) {
+    return (
+      <Modal>
+        <p>Loading...</p>
+      </Modal>
+    );
+  };
 
   return (
     <Modal title="Edit Dragon">
@@ -22,13 +34,17 @@ const Edit = () => {
         initialValues={{name: dragon.name, type: dragon.type }}
       >
         <Form aria-label="form">
-          <label htmlFor="name">Name</label>
-          <Field id="name" name="name" type="text" />
+          <FieldWrapper>
+            <Label htmlFor="name">Name</Label>
+            <StyledField id="name" name="name" type="text" />
+          </FieldWrapper>
           
-          <label htmlFor="type">Type</label>
-          <Field id="type" name="type" type="text" />
+          <FieldWrapper>
+            <Label htmlFor="type">Type</Label>
+            <StyledField id="type" name="type" type="text" />
+          </FieldWrapper>
 
-          <button type="submit">Save</button>
+          <Button type="submit">Save</Button>
         </Form>
       </Formik>
     </Modal>
