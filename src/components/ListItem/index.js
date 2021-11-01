@@ -1,7 +1,7 @@
 import React from 'react';
 import { useDragons } from 'context/Dragons';
 import { deleteDragon } from 'context/Dragons/dragonsReducer';
-import { useHistory } from 'react-router-dom';
+import { useHistory, useRouteMatch } from 'react-router-dom';
 import { apiDeleteDragon } from 'services/api';
 import { MdModeEdit, MdDelete } from 'react-icons/md';
 import {
@@ -9,7 +9,6 @@ import {
   InfoWrapper,
   Name,
   Type,
-  StyledDate,
   ButtonsWrapper,
   IconButton,
 } from './style';
@@ -18,8 +17,7 @@ const ListItem = ({ id, name, type, createdAt }) => {
   const [, dispatch] = useDragons();
 
   let history = useHistory();
-  
-  const date = new Date(createdAt).toLocaleDateString('en-US');
+  const { url } = useRouteMatch();
   
   const handleDelete = () => {
     apiDeleteDragon(id).then(() => {
@@ -33,7 +31,7 @@ const ListItem = ({ id, name, type, createdAt }) => {
   return (
     <Item 
       data-testid="dragon-item"
-      onClick={() => history.push(`/details/${id}`)}
+      onClick={() => history.push(`${url}/details/${id}`)}
     >
       <InfoWrapper>
         <Name data-testid="dragon-item-name">{name}</Name>
@@ -42,7 +40,7 @@ const ListItem = ({ id, name, type, createdAt }) => {
       <ButtonsWrapper onClick={e => e.stopPropagation()}>
         <IconButton 
           aria-label="edit"
-          onClick={() => history.push(`/edit/${id}`)}
+          onClick={() => history.push(`${url}/edit/${id}`)}
         >
           <MdModeEdit />
         </IconButton>

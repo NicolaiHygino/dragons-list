@@ -11,20 +11,27 @@ import {
   StyledError,
 } from './style';
 import { Button } from 'globalStyles';
+import { useAuth } from 'context/Auth';
 
 const dummyLoginApi = (username, password) => {
   if (username === 'admin' && password === 'admin') {
-    return Promise.resolve(username);
+    return Promise.resolve({
+      data: {
+        token: 'dummytoken', 
+        user: username
+      }
+    });
   }
   return Promise.reject('No user found for this username/password');
 };
 
-const Login = ({ setUser }) => {
+const Login = () => {
   const [error, setError] = useState('');
+  const auth = useAuth();
   
   const handleSubmit = ({username, password}) => {
-    dummyLoginApi(username, password).then(res => {
-      setUser(res);
+    dummyLoginApi(username, password).then(({ data }) => {
+      auth.signin(data.token, data.user);
     })
     .catch(err => {
       setError(err);

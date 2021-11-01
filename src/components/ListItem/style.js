@@ -47,11 +47,6 @@ export const Histories = styled.p`
   font-size: 1.1em;
 `;
 
-export const StyledDate = styled.p`
-  color: #333;
-  font-size: .9em;
-`;
-
 export const ButtonsWrapper = styled.div`
   
 `;

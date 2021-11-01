@@ -3,11 +3,12 @@ import Details from 'views/Details';
 import Edit from 'views/Edit';
 import AddNew from 'views/AddNew';
 import ListItem from 'components/ListItem';
+import PageNotFound from 'components/PageNotFound';
 import Pagination from 'components/Pagination';
 import Message from 'components/Message';
 import { useDragons } from 'context/Dragons';
 import { addDragons } from 'context/Dragons/dragonsReducer';
-import { Switch, Route, useHistory } from 'react-router-dom';
+import { Switch, Route, useHistory, useRouteMatch } from 'react-router-dom';
 import { apiGetAllDragons } from 'services/api';
 import { FiInbox } from 'react-icons/fi';
 import {
@@ -35,6 +36,7 @@ const Dashboard = () => {
   const currentDragons = dragons.slice(indexOfFirstPost, indexOfLastPost);
 
   const history = useHistory();
+  const { path, url } = useRouteMatch();
 
   useEffect(() => {
     apiGetAllDragons().then(({ data }) => {
@@ -47,7 +49,7 @@ const Dashboard = () => {
   return (
     <>
       <Content>
-        <AddNewButton onClick={() => history.push('/add')}>
+        <AddNewButton onClick={() => history.push(`${url}/add`)}>
           Add New Dragon
         </AddNewButton>
         {dragons.length === 0 && (
@@ -65,14 +67,17 @@ const Dashboard = () => {
         />
       </Content>
       <Switch>
-        <Route path="/edit/:id">
+        <Route path={`${path}/edit/:id`}>
           <Edit />
         </Route>
-        <Route path="/details/:id">
+        <Route path={`${path}/details/:id`}>
           <Details />
         </Route>
-        <Route path="/add">
+        <Route path={`${path}/add`}>
           <AddNew />
+        </Route>
+        <Route path="/dashboard/*">
+          <PageNotFound />
         </Route>
       </Switch>
     </>
