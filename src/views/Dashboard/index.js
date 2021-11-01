@@ -3,10 +3,12 @@ import Details from 'views/Details';
 import Edit from 'views/Edit';
 import AddNew from 'views/AddNew';
 import ListItem from 'components/ListItem';
+import Message from 'components/Message';
 import { useDragons } from 'context/Dragons';
 import { addDragons } from 'context/Dragons/dragonsReducer';
 import { Switch, Route, useHistory } from 'react-router-dom';
 import { apiGetAllDragons } from 'services/api';
+import { FiInbox } from 'react-icons/fi';
 import {
   Content,
   AddNewButton,
@@ -39,6 +41,12 @@ const Dashboard = () => {
         <AddNewButton onClick={() => history.push('/add')}>
           Add New Dragon
         </AddNewButton>
+        {dragons.length === 0 && (
+          <Message
+            icon={<FiInbox size="1.5em" />}
+            text="No dragons registered, start adding yours!"
+          />
+        )}
         {dragons.map(dragon => <ListItem key={dragon.id} {...dragon} />)}
       </Content>
       <Switch>
