@@ -2,6 +2,10 @@
 
 This project was created for a SoftDesign code test
 
+## Login Credentials
+- username: admin
+- password: admin
+
 ## Available Scripts
 
 In the project directory, you can run:
