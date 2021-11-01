@@ -15,8 +15,12 @@ const Form = ({ initialValues, onFormSubmit }) => {
     <Formik
       initialValues={initialValues}
       validationSchema={Yup.object({
-        name: Yup.string().required('Required'),
-        type: Yup.string().required('Required'),
+        name: Yup.string()
+          .required('Required')
+          .max(20, 'Must be 20 characters or less'),
+        type: Yup.string()
+          .required('Required')
+          .max(15, 'Must be 15 characters or less'),
         histories: Yup.string().required('Required'),
       })}
       onSubmit={values => onFormSubmit(values)}
