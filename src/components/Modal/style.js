@@ -20,6 +20,7 @@ export const Background = styled.div`
 
   background-color: rgba(57, 17, 91, .5);
   backdrop-filter: blur(2px);
+  -webkit-backdrop-filter: blur(2px);
 `;
 
 export const StyledModal = styled.section`
