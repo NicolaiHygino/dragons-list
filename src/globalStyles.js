@@ -5,7 +5,7 @@ export const GlobalStyle = createGlobalStyle`
     --main-color: #964BF0;
     --scd-color: #8260D5;
     --error: #c0392b;
-    --bg-color: #EDECEE;
+    --bg-color: #EFEFEF;
   }
 
   * {

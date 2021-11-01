@@ -3,6 +3,7 @@ import styled from 'styled-components';
 export const Content = styled.section`
   position: relative;
   max-width: 500px;
+  min-height: 500px;
   margin: 20px auto;
   padding: 10px;
   border-radius: 3px;

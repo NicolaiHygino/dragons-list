@@ -11,7 +11,11 @@ const mock = new MockAdapter(api, { onNoMatch: "throwException" });
 const dragonsSample = [
   {createdAt: '2021-01-02T22:58:30.625Z', name: 'name2', type: 'type2', histories: 'histories2', id: '2'},
   {createdAt: '2021-01-01T22:58:29.625Z', name: 'name1', type: 'type1', histories: 'histories1', id: '1'},
-  {createdAt: '2021-01-03T22:58:31.625Z', name: 'name3', type: 'type2', histories: 'histories3', id: '3'},
+  {createdAt: '2021-01-03T22:58:31.625Z', name: 'name3', type: 'type3', histories: 'histories3', id: '3'},
+  {createdAt: '2021-01-04T22:58:31.625Z', name: 'name4', type: 'type4', histories: 'histories4', id: '4'},
+  {createdAt: '2021-01-05T22:58:31.625Z', name: 'name5', type: 'type5', histories: 'histories5', id: '5'},
+  {createdAt: '2021-01-06T22:58:31.625Z', name: 'name6', type: 'type6', histories: 'histories6', id: '6'},
+  {createdAt: '2021-01-07T22:58:31.625Z', name: 'name7', type: 'type7', histories: 'histories7', id: '7'},
 ];
 
 const singleDragon = {
@@ -24,16 +28,16 @@ const singleDragon = {
 
 const newDragon = {
   createdAt: '2021-01-01T22:58:29.625Z',
-  name: 'newdragon4',
-  type: 'newtype4',
-  histories: 'newhistories4',
-  id: '4',
+  name: 'anewname999',
+  type: 'anewtype999',
+  histories: 'anewhistories999',
+  id: '999',
 };
 
 const editDragon = { 
-  name: 'newdragon1', 
-  type:'newtype1', 
-  histories: 'histories1'
+  name: 'anewname999', 
+  type:'anewtype999', 
+  histories: 'ahistories999'
 }
 
 describe('Dashboard', () => {
@@ -96,12 +100,29 @@ describe('Dashboard', () => {
     expect(await screen.findByText('Dragon Details')).toBeInTheDocument();
   });
 
+  it('renders a pagination buttons', async () => {
+    await renderWithRouterAndWait(<Dashboard />);
+
+    const pagButton = await screen.findAllByTestId('pag-button');
+
+    expect(pagButton.length).toBe(2);
+  });
+
+  it('show new items when paginate', async () => {
+    await renderWithRouterAndWait(<Dashboard />);
+
+    const pagButton = await screen.findAllByTestId('pag-button');
+    act(() => userEvent.click(pagButton[1]));
+
+    expect(await screen.findByText('name7')).toBeInTheDocument();
+  });
+
   it('renders a edit button for every one dragon item', async () => {
     await renderWithRouterAndWait(<Dashboard />);
 
     const editButtons = await screen.findAllByLabelText('edit');
 
-    expect(editButtons).toHaveLength(3);
+    expect(editButtons).toHaveLength(5);
   });
 
   it('renders a delete button for every one dragon item', async () => {
@@ -109,7 +130,7 @@ describe('Dashboard', () => {
 
     const delButtons = await screen.findAllByLabelText('delete');
 
-    expect(delButtons).toHaveLength(3);
+    expect(delButtons).toHaveLength(5);
   });
 
   it('deletes the respective dragon when we click the delete button', async () => {
@@ -206,16 +227,16 @@ describe('Dashboard', () => {
       await renderWithRouterAndWait(<Dashboard />);
       await goToAddNewPage();
 
-      change(await screen.findByLabelText('Name'), 'newdragon4');
-      change(await screen.findByLabelText('Type'), 'newtype4');
-      change(await screen.findByLabelText('Histories'), 'newhistories4');
+      change(await screen.findByLabelText('Name'), 'anewname999');
+      change(await screen.findByLabelText('Type'), 'anewtype999');
+      change(await screen.findByLabelText('Histories'), 'anewhistories999');
       userEvent.click(await screen.findByText('Save'));
 
       await waitFor(() => {
         expect(JSON.parse(mock.history.post[0].data)).toMatchObject({
-          name: 'newdragon4', 
-          type:'newtype4',
-          histories: 'newhistories4',
+          name: 'anewname999', 
+          type:'anewtype999',
+          histories: 'anewhistories999',
         });
       });
     });
@@ -224,15 +245,15 @@ describe('Dashboard', () => {
       await renderWithRouterAndWait(<Dashboard />);
       await goToAddNewPage();
 
-      change(await screen.findByLabelText('Name'), 'newdragon4');
-      change(await screen.findByLabelText('Type'), 'newtype4');
-      change(await screen.findByLabelText('Histories'), 'newhistories4');
+      change(await screen.findByLabelText('Name'), 'anewname999');
+      change(await screen.findByLabelText('Type'), 'anewtype999');
+      change(await screen.findByLabelText('Histories'), 'anewhistories999');
       
       await act(async () => {
         userEvent.click(await screen.findByText('Save'));
       });
 
-      expect(await screen.findByText('newdragon4')).toBeInTheDocument();
+      expect(await screen.findByText('anewname999')).toBeInTheDocument();
     });
 
     it('shows required message if submitted empty', async () => {
@@ -293,16 +314,16 @@ describe('Dashboard', () => {
       await renderWithRouterAndWait(<Dashboard />);
       await goToEditPage();
 
-      change(await screen.findByLabelText('Name'), 'newdragon1');
-      change(await screen.findByLabelText('Type'), 'newtype1');
-      change(await screen.findByLabelText('Histories'), 'newhistories1');
+      change(await screen.findByLabelText('Name'), 'anewname999');
+      change(await screen.findByLabelText('Type'), 'anewtype999');
+      change(await screen.findByLabelText('Histories'), 'anewhistories999');
       userEvent.click(await screen.findByText('Save'));
 
       await waitFor(() => {
         expect(JSON.parse(mock.history.put[0].data)).toMatchObject({
-          name: 'newdragon1', 
-          type:'newtype1',
-          histories: 'newhistories1',
+          name: 'anewname999', 
+          type:'anewtype999',
+          histories: 'anewhistories999',
         });
       });
     });
@@ -311,15 +332,15 @@ describe('Dashboard', () => {
       await renderWithRouterAndWait(<Dashboard />);
       await goToEditPage();
 
-      change(await screen.findByLabelText('Name'), 'newdragon1');
-      change(await screen.findByLabelText('Type'), 'newtype1');
-      change(await screen.findByLabelText('Histories'), 'newhistories1');
+      change(await screen.findByLabelText('Name'), 'anewname999');
+      change(await screen.findByLabelText('Type'), 'anewtype999');
+      change(await screen.findByLabelText('Histories'), 'anewhistories999');
       
       await act(async () => {
         userEvent.click(await screen.findByText('Save'));
       });
 
-      expect(await screen.findByText('newdragon1')).toBeInTheDocument();
+      expect(await screen.findByText('anewname999')).toBeInTheDocument();
     });
 
     it("shows a error message if the dragon doesn't exists", async () => {

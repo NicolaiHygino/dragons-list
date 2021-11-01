@@ -1,8 +1,9 @@
-import React, { useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import Details from 'views/Details';
 import Edit from 'views/Edit';
 import AddNew from 'views/AddNew';
 import ListItem from 'components/ListItem';
+import Pagination from 'components/Pagination';
 import Message from 'components/Message';
 import { useDragons } from 'context/Dragons';
 import { addDragons } from 'context/Dragons/dragonsReducer';
@@ -17,6 +18,8 @@ import {
 const Dashboard = () => {
   const [state, dispatch] = useDragons();
   const { dragons } = state;
+  const [currentPage, setCurrentPage] = useState(1);
+  const [dragonsPerPage] = useState(5);
   
   dragons.sort((a, b) => {
     const nameA = a.name.toUpperCase();
@@ -27,6 +30,10 @@ const Dashboard = () => {
     return 0;
   });
 
+  const indexOfLastPost = currentPage * dragonsPerPage;
+  const indexOfFirstPost = indexOfLastPost - dragonsPerPage;
+  const currentDragons = dragons.slice(indexOfFirstPost, indexOfLastPost);
+
   const history = useHistory();
 
   useEffect(() => {
@@ -34,6 +41,8 @@ const Dashboard = () => {
       dispatch(addDragons(data));
     });
   }, [dispatch]);
+
+  const paginate = pageNumber => setCurrentPage(pageNumber);
   
   return (
     <>
@@ -47,7 +56,13 @@ const Dashboard = () => {
             text="No dragons registered, start adding yours!"
           />
         )}
-        {dragons.map(dragon => <ListItem key={dragon.id} {...dragon} />)}
+        {currentDragons.map(dragon => <ListItem key={dragon.id} {...dragon} />)}
+        <Pagination 
+          currentPage={currentPage}
+          itemsPerPage={dragonsPerPage} 
+          totalItems={dragons.length}
+          paginate={paginate}
+        />
       </Content>
       <Switch>
         <Route path="/edit/:id">
