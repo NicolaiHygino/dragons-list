@@ -8,12 +8,16 @@ import Pagination from 'components/Pagination';
 import Message from 'components/Message';
 import { useDragons } from 'context/Dragons';
 import { addDragons } from 'context/Dragons/dragonsReducer';
+import { useAuth } from 'context/Auth';
 import { Switch, Route, useHistory, useRouteMatch } from 'react-router-dom';
 import { apiGetAllDragons } from 'services/api';
 import { FiInbox } from 'react-icons/fi';
 import {
   Content,
   AddNewButton,
+  AccountWrapper,
+  User,
+  Signout,
 } from './style';
 
 const Dashboard = () => {
@@ -21,6 +25,8 @@ const Dashboard = () => {
   const { dragons } = state;
   const [currentPage, setCurrentPage] = useState(1);
   const [dragonsPerPage] = useState(5);
+
+  const auth = useAuth()
   
   dragons.sort((a, b) => {
     const nameA = a.name.toUpperCase();
@@ -34,6 +40,8 @@ const Dashboard = () => {
   const indexOfLastPost = currentPage * dragonsPerPage;
   const indexOfFirstPost = indexOfLastPost - dragonsPerPage;
   const currentDragons = dragons.slice(indexOfFirstPost, indexOfLastPost);
+  
+  const paginate = pageNumber => setCurrentPage(pageNumber);
 
   const history = useHistory();
   const { path, url } = useRouteMatch();
@@ -44,11 +52,13 @@ const Dashboard = () => {
     });
   }, [dispatch]);
 
-  const paginate = pageNumber => setCurrentPage(pageNumber);
-  
   return (
     <>
       <Content>
+        <AccountWrapper>
+          <p>Hello, <User>{auth.user}</User>!</p>
+          <Signout onClick={() => auth.signout()}>Signout</Signout>
+        </AccountWrapper>
         <AddNewButton onClick={() => history.push(`${url}/add`)}>
           Add New Dragon
         </AddNewButton>

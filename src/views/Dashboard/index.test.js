@@ -1,5 +1,6 @@
 import Dashboard from '.';
 import { DragonsProvider } from 'context/Dragons';
+import { ProvideAuth } from 'context/Auth';
 import { act, render, screen, fireEvent, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { MemoryRouter } from 'react-router';
@@ -59,7 +60,9 @@ describe('Dashboard', () => {
       render(
         <MemoryRouter initialEntries={[initialPage]}>
           <DragonsProvider>
-            { component }
+            <ProvideAuth>
+              { component }
+            </ProvideAuth>
           </DragonsProvider>
         </MemoryRouter>
       );
