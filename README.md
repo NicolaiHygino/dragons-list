@@ -6,7 +6,8 @@ This project was created for a SoftDesign code test
 - username: admin
 - password: admin
 
-## Available Scripts
+## Installation
+Clone or download the project and follow the steps bellow.
 
 In the project directory, you can run:
 
