@@ -183,12 +183,6 @@ describe('Dashboard', () => {
       expect(histories).toBeInTheDocument();
       expect(date).toBeInTheDocument();
     });
-
-    it.skip("shows a error message if the dragon doesn't exists", async () => {
-      await renderWithRouterAndWait(<Dashboard />, '/dashboard/details/300');
-
-      expect(await screen.findByText("Dragon doesn't exists")).toBeInTheDocument();
-    });
   });
 
   describe('Add New Page', () => {
@@ -336,12 +330,6 @@ describe('Dashboard', () => {
       });
 
       expect(await screen.findByText('anewname999')).toBeInTheDocument();
-    });
-
-    it.skip("shows a error message if the dragon doesn't exists", async () => {
-      await renderWithRouterAndWait(<Dashboard />, '/dashboard/edit/1');
-
-      expect(await screen.findByText("Dragon doesn't exists")).toBeInTheDocument();
     });
   });
 });

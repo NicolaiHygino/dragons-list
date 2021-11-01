@@ -23,20 +23,6 @@ describe('Login', () => {
     expect(screen.getByText('Submit')).toBeInTheDocument();
   });
 
-  it.skip("submit form with the right values", async () => {
-    const setUserSpy = jest.fn();
-    render(<Login setUser={setUserSpy} />);
-    
-    userEvent.type(screen.getByLabelText('Username'), 'admin');
-    userEvent.type(screen.getByLabelText('Password'), 'admin');
-
-    userEvent.click(screen.getByRole('button', {name: 'Submit'}));
-    
-    await waitFor(() => {
-      expect(setUserSpy).toHaveBeenCalledWith('admin');
-    });
-  });
-
   it("shows an error if user doesn't exists", async () => {
     render(<Login setUser={() => {}} />);
 
