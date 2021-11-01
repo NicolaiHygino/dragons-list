@@ -18,18 +18,28 @@ export const Item = styled.div`
 `;
 
 export const InfoWrapper = styled.div`
-
+  max-width: 80%;
+  
+  @media screen and (max-width: 500px) {
+    max-width: 60%;
+  }
 `;
 
 export const Name = styled.h2`
-  font-size: 1.4em;
+  font-size: 1.2em;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 `;
 
 export const Type = styled.span`
   background-color: var(--main-color);
   padding: 0 3px;
-  font-size: .9rem;
+  font-size: .8rem;
   color: white;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 `;
 
 export const Histories = styled.p`

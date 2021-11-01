@@ -36,8 +36,8 @@ const ListItem = ({ id, name, type, createdAt }) => {
       onClick={() => history.push(`/details/${id}`)}
     >
       <InfoWrapper>
-        <Name data-testid="dragon-item-name">{name} <Type>{type}</Type></Name>
-        <StyledDate>{date}</StyledDate>
+        <Name data-testid="dragon-item-name">{name}</Name>
+        <Type>{type}</Type>
       </InfoWrapper>
       <ButtonsWrapper onClick={e => e.stopPropagation()}>
         <IconButton 

@@ -12,10 +12,10 @@ const dragonsSample = [
   {createdAt: '2021-01-02T22:58:30.625Z', name: 'name2', type: 'type2', histories: 'histories2', id: '2'},
   {createdAt: '2021-01-01T22:58:29.625Z', name: 'name1', type: 'type1', histories: 'histories1', id: '1'},
   {createdAt: '2021-01-03T22:58:31.625Z', name: 'name3', type: 'type3', histories: 'histories3', id: '3'},
-  {createdAt: '2021-01-04T22:58:31.625Z', name: 'name4', type: 'type4', histories: 'histories4', id: '4'},
-  {createdAt: '2021-01-05T22:58:31.625Z', name: 'name5', type: 'type5', histories: 'histories5', id: '5'},
-  {createdAt: '2021-01-06T22:58:31.625Z', name: 'name6', type: 'type6', histories: 'histories6', id: '6'},
-  {createdAt: '2021-01-07T22:58:31.625Z', name: 'name7', type: 'type7', histories: 'histories7', id: '7'},
+  {createdAt: '2021-01-04T22:58:32.625Z', name: 'name4', type: 'type4', histories: 'histories4', id: '4'},
+  {createdAt: '2021-01-05T22:58:33.625Z', name: 'name5', type: 'type5', histories: 'histories5', id: '5'},
+  {createdAt: '2021-01-06T22:58:34.625Z', name: 'name6', type: 'type6', histories: 'histories6', id: '6'},
+  {createdAt: '2021-01-07T22:58:35.625Z', name: 'name7', type: 'type7', histories: 'histories7', id: '7'},
 ];
 
 const singleDragon = {
@@ -81,14 +81,6 @@ describe('Dashboard', () => {
     expect(namesList[0].textContent).toContain('name1');
     expect(namesList[1].textContent).toContain('name2');
     expect(namesList[2].textContent).toContain('name3');
-  });
-
-  it('display dragon item creation date formatted', async () => {
-    await renderWithRouterAndWait(<Dashboard />);
-
-    expect(await screen.findByText('1/1/2021')).toBeInTheDocument();
-    expect(await screen.findByText('1/2/2021')).toBeInTheDocument();
-    expect(await screen.findByText('1/3/2021')).toBeInTheDocument();
   });
 
   it('shows dragon details when we click on an item', async () => {
@@ -181,12 +173,12 @@ describe('Dashboard', () => {
       const name = await screen.findAllByText('name1');
       const type = await screen.findAllByText('type1');
       const histories = await screen.findByText('histories1');
-      const date = await screen.findAllByText('1/1/2021');
+      const date = await screen.findByText('1/1/2021');
       
       expect(name[1]).toBeInTheDocument();
       expect(type[1]).toBeInTheDocument();
       expect(histories).toBeInTheDocument();
-      expect(date[1]).toBeInTheDocument();
+      expect(date).toBeInTheDocument();
     });
 
     it("shows a error message if the dragon doesn't exists", async () => {
