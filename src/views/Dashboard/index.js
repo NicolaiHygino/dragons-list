@@ -55,20 +55,22 @@ const Dashboard = () => {
   return (
     <>
       <Content>
-        <AccountWrapper>
-          <p>Hello, <User>{auth.user}</User>!</p>
-          <Signout onClick={() => auth.signout()}>Signout</Signout>
-        </AccountWrapper>
-        <AddNewButton onClick={() => history.push(`${url}/add`)}>
-          Add New Dragon
-        </AddNewButton>
-        {dragons.length === 0 && (
-          <Message
-            icon={<FiInbox size="1.5em" />}
-            text="No dragons registered, start adding yours!"
-          />
-        )}
-        {currentDragons.map(dragon => <ListItem key={dragon.id} {...dragon} />)}
+        <div>
+          <AccountWrapper>
+            <p>Hello, <User>{auth.user}</User>!</p>
+            <Signout onClick={() => auth.signout()}>Signout</Signout>
+          </AccountWrapper>
+          <AddNewButton onClick={() => history.push(`${url}/add`)}>
+            Add New Dragon
+          </AddNewButton>
+          {dragons.length === 0 && (
+            <Message
+              icon={<FiInbox size="1.5em" />}
+              text="No dragons registered, start adding yours!"
+            />
+          )}
+          {currentDragons.map(dragon => <ListItem key={dragon.id} {...dragon} />)}
+        </div>
         <Pagination 
           currentPage={currentPage}
           itemsPerPage={dragonsPerPage} 

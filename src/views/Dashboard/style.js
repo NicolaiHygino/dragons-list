@@ -1,6 +1,9 @@
 import styled from 'styled-components';
 
 export const Content = styled.section`
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
   position: relative;
   max-width: 500px;
   min-height: 530px;
