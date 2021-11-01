@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import Modal from 'components/Modal';
+import Loading from 'components/Loading';
 import { useParams } from 'react-router';
 import { apiGetDragon } from 'services/api';
 import {
@@ -26,17 +27,11 @@ const Details = () => {
     });
   }, [id]);
 
-  if (loading) {
-    return (
-      <Modal>
-        <p>Loading</p>
-      </Modal>
-    );
-  };
+  if (loading) return <Loading />;
   
   if (error) {
     return (
-      <Modal>
+      <Modal title="Not Found">
         <p>{error}</p>
       </Modal>
     );

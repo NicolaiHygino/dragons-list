@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import Modal from 'components/Modal';
 import Form from 'components/Form';
+import Loading from 'components/Loading';
 import { useDragons } from 'context/Dragons';
 import { editDragon } from 'context/Dragons/dragonsReducer';
 import { apiGetDragon, apiEditDragon } from 'services/api';
@@ -33,17 +34,11 @@ const Edit = () => {
     });
   }, [id]);
   
-  if (loading) {
-    return (
-      <Modal>
-        <p>Loading...</p>
-      </Modal>
-    );
-  };
+  if (loading) return <Loading />;
 
   if (error) {
     return (
-      <Modal>
+      <Modal title="Not Found">
         <p>{error}</p>
       </Modal>
     );
