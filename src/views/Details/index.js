@@ -11,12 +11,17 @@ import {
 const Details = () => {
   const [details, setDetails] = useState();
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState('');
 
   let { id } = useParams();
 
   useEffect(() => {
     apiGetDragon(id).then(res => {
       setDetails(res.data);
+      setLoading(false);
+    })
+    .catch(() => {
+      setError("dragon doesn't exists");
       setLoading(false);
     });
   }, [id]);
@@ -29,6 +34,14 @@ const Details = () => {
     );
   };
   
+  if (error) {
+    return (
+      <Modal>
+        <p>{error}</p>
+      </Modal>
+    );
+  };
+
   const date = new Date(details.createdAt).toLocaleDateString('en-US');
 
   return (

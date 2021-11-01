@@ -1,6 +1,6 @@
 import Dashboard from '.';
 import { DragonsProvider } from 'context/Dragons';
-import { act, render, screen, fireEvent, waitFor } from '@testing-library/react';
+import { act, render, screen, fireEvent, waitFor, findByText } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { MemoryRouter } from 'react-router';
 import { api } from 'services/api';
@@ -30,15 +30,18 @@ const newDragon = {
   id: '4',
 };
 
+const editDragon = { 
+  name: 'newdragon1', 
+  type:'newtype1', 
+  histories: 'histories1'
+}
+
 describe('Dashboard', () => {
   beforeEach(() => {
     mock.onDelete('/1').reply(200, singleDragon);
-    mock.onPut('/1').reply(200, { 
-      name: 'newdragon1', 
-      type:'newtype1', 
-      histories: 'histories1'
-    });
+    mock.onPut('/1').reply(200, editDragon);
     mock.onPost().reply(200, newDragon);
+    mock.onGet('/300').reply(404);
     mock.onGet('/1').reply(200, singleDragon);
     mock.onGet().reply(200, dragonsSample);
   });
@@ -47,10 +50,10 @@ describe('Dashboard', () => {
     mock.reset();
   });
   
-  const renderWithRouterAndWait = (component, initialEntries = '/') => 
+  const renderWithRouterAndWait = (component, initialPage = '/') => 
     act(async () => {
       render(
-        <MemoryRouter initialEntries={[initialEntries]}>
+        <MemoryRouter initialEntries={[initialPage]}>
           <DragonsProvider>
             { component }
           </DragonsProvider>
@@ -91,23 +94,6 @@ describe('Dashboard', () => {
     await act(async () => fireEvent.click(items[0]));
 
     expect(await screen.findByText('Dragon Details')).toBeInTheDocument();
-  });
-
-  it('should display dragon details with right data', async () => {
-    await renderWithRouterAndWait(<Dashboard />);
-    
-    const items = await screen.findAllByTestId('dragon-item');
-    await act(async () => fireEvent.click(items[0]));
-
-    const name = await screen.findAllByText('name1');
-    const type = await screen.findAllByText('type1');
-    const histories = await screen.findByText('histories1');
-    const date = await screen.findAllByText('1/1/2021');
-    
-    expect(name[1]).toBeInTheDocument();
-    expect(type[1]).toBeInTheDocument();
-    expect(histories).toBeInTheDocument();
-    expect(date[1]).toBeInTheDocument();
   });
 
   it('renders a edit button for every one dragon item', async () => {
@@ -162,6 +148,31 @@ describe('Dashboard', () => {
     await act(async () => fireEvent.click(addButton));
 
     expect(await screen.findByText('New Dragon')).toBeInTheDocument();
+  });
+
+  describe('Details page', () => {
+    it('displays right dragon details', async () => {
+      await renderWithRouterAndWait(<Dashboard />);
+      
+      const items = await screen.findAllByTestId('dragon-item');
+      await act(async () => fireEvent.click(items[0]));
+  
+      const name = await screen.findAllByText('name1');
+      const type = await screen.findAllByText('type1');
+      const histories = await screen.findByText('histories1');
+      const date = await screen.findAllByText('1/1/2021');
+      
+      expect(name[1]).toBeInTheDocument();
+      expect(type[1]).toBeInTheDocument();
+      expect(histories).toBeInTheDocument();
+      expect(date[1]).toBeInTheDocument();
+    });
+
+    it("shows a error message if the dragon doesn't exists", async () => {
+      await renderWithRouterAndWait(<Dashboard />, '/details/300');
+
+      expect(await screen.findByText("dragon doesn't exists")).toBeInTheDocument();
+    });
   });
 
   describe('Add New Page', () => {
@@ -309,6 +320,12 @@ describe('Dashboard', () => {
       });
 
       expect(await screen.findByText('newdragon1')).toBeInTheDocument();
+    });
+
+    it("shows a error message if the dragon doesn't exists", async () => {
+      await renderWithRouterAndWait(<Dashboard />, '/edit/300');
+      
+      expect(await screen.findByText("dragon doesn't exists")).toBeInTheDocument();
     });
   });
 });

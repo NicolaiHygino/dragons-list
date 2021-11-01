@@ -7,8 +7,10 @@ import { apiGetDragon, apiEditDragon } from 'services/api';
 import { useHistory, useParams } from 'react-router';
 
 const Edit = () => {
-  const [dragon, setDragon] = useState();
   const [, dispatch] = useDragons();
+  const [dragon, setDragon] = useState();
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState('');
 
   const history = useHistory();
   const { id } = useParams();
@@ -23,13 +25,26 @@ const Edit = () => {
   useEffect(() => {
     apiGetDragon(id).then(res => {
       setDragon(res.data);
+      setLoading(false);
+    })
+    .catch(() => {
+      setError("dragon doesn't exists")
+      setLoading(false);
     });
   }, [id]);
   
-  if (!dragon) {
+  if (loading) {
     return (
       <Modal>
         <p>Loading...</p>
+      </Modal>
+    );
+  };
+
+  if (error) {
+    return (
+      <Modal>
+        <p>{error}</p>
       </Modal>
     );
   };
