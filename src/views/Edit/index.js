@@ -1,11 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import Modal from 'components/Modal';
 import Form from 'components/Form';
+import Message from 'components/Message';
 import Loading from 'components/Loading';
 import { useDragons } from 'context/Dragons';
 import { editDragon } from 'context/Dragons/dragonsReducer';
 import { apiGetDragon, apiEditDragon } from 'services/api';
 import { useHistory, useParams } from 'react-router';
+import { BiError } from 'react-icons/bi';
 
 const Edit = () => {
   const [, dispatch] = useDragons();
@@ -29,7 +31,7 @@ const Edit = () => {
       setLoading(false);
     })
     .catch(() => {
-      setError("dragon doesn't exists")
+      setError("Dragon doesn't exists")
       setLoading(false);
     });
   }, [id]);
@@ -39,7 +41,10 @@ const Edit = () => {
   if (error) {
     return (
       <Modal title="Not Found">
-        <p>{error}</p>
+        <Message 
+          icon={<BiError size="1.5em"/>}
+          text={error}
+        />
       </Modal>
     );
   };

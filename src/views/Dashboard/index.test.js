@@ -171,7 +171,7 @@ describe('Dashboard', () => {
     it("shows a error message if the dragon doesn't exists", async () => {
       await renderWithRouterAndWait(<Dashboard />, '/details/300');
 
-      expect(await screen.findByText("dragon doesn't exists")).toBeInTheDocument();
+      expect(await screen.findByText("Dragon doesn't exists")).toBeInTheDocument();
     });
   });
 
@@ -325,7 +325,7 @@ describe('Dashboard', () => {
     it("shows a error message if the dragon doesn't exists", async () => {
       await renderWithRouterAndWait(<Dashboard />, '/edit/300');
       
-      expect(await screen.findByText("dragon doesn't exists")).toBeInTheDocument();
+      expect(await screen.findByText("Dragon doesn't exists")).toBeInTheDocument();
     });
   });
 });

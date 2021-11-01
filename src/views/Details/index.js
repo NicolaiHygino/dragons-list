@@ -1,8 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import Modal from 'components/Modal';
+import Message from 'components/Message';
 import Loading from 'components/Loading';
 import { useParams } from 'react-router';
 import { apiGetDragon } from 'services/api';
+import { BiError } from 'react-icons/bi';
 import {
   Name,
   Type,
@@ -22,7 +24,7 @@ const Details = () => {
       setLoading(false);
     })
     .catch(() => {
-      setError("dragon doesn't exists");
+      setError("Dragon doesn't exists");
       setLoading(false);
     });
   }, [id]);
@@ -32,7 +34,10 @@ const Details = () => {
   if (error) {
     return (
       <Modal title="Not Found">
-        <p>{error}</p>
+        <Message 
+          icon={<BiError size="1.5em"/>}
+          text={error}
+        />
       </Modal>
     );
   };
