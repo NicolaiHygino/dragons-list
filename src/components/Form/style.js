@@ -8,7 +8,7 @@ export const StyledForm = styled(Form)`
     max-height: 250px;
     border: 0;
     background-color: #e1dfe2;
-    color: #757575;
+    color: #676767;
     width: 100%;
     padding: .7em;
     transition: all ease .3s;
@@ -25,14 +25,13 @@ export const FieldWrapper = styled.div`
 
 export const Label = styled.label`
   display: block;
-  color: #757575;
   font-weight: 600;
 `;
 
 export const StyledField = styled(Field)`
   border: 0;
   background-color: #e1dfe2;
-  color: #757575;
+  color: #676767;
   width: 100%;
   padding: .7em;
   transition: all ease .3s;

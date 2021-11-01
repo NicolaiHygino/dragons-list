@@ -4,7 +4,7 @@ export const Item = styled.div`
   display: flex;
   align-items: center;
   justify-content: space-between;
-  background: white;
+  background: var(--bg-color);
   margin-bottom: 10px;
   border-radius: 2px;
   padding: 10px;
@@ -52,7 +52,9 @@ export const IconButton = styled.button`
   cursor: pointer;
   background-color: white;
   color: #4e4a57;
-  padding: .2em .5em;
+  border-radius: 3px;
+  padding: .6em .8em;
+  margin-left: 10px;
   transition: all ease .2s;
 
   &:hover {

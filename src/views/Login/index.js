@@ -1,12 +1,14 @@
 import React, { useState } from 'react';
 import { Formik, ErrorMessage } from 'formik';
 import {
+  LoginWrapper,
   StyledLogin,
   FieldWrapper,
   StyledForm,
+  Label,
   StyledField,
   Header,
-  Error,
+  StyledError,
 } from './style';
 import { Button } from 'globalStyles';
 
@@ -30,32 +32,34 @@ const Login = ({ setUser }) => {
   };
   
   return (
-    <StyledLogin>
-      <Formik
-        initialValues={{ username: '', password: '' }}
-        onSubmit={values => handleSubmit(values)}
-      >
-        <StyledForm aria-label="form">
-          <Header>Login</Header>
+    <LoginWrapper>
+      <StyledLogin>
+        <Formik
+          initialValues={{ username: '', password: '' }}
+          onSubmit={values => handleSubmit(values)}
+        >
+          <StyledForm aria-label="form">
+            <Header>Login</Header>
 
-          {error && <Error>{error}</Error>}
+            {error && <StyledError>{error}</StyledError>}
 
-          <FieldWrapper>
-            <label htmlFor="username">Username</label>
-            <StyledField id="username" name="username" type="text" />
-            <ErrorMessage name="username" />
-          </FieldWrapper>
-  
-          <FieldWrapper>
-            <label htmlFor="password">Password</label>
-            <StyledField id="password" name="password" type="password" />
-            <ErrorMessage name="password" />
-          </FieldWrapper>
+            <FieldWrapper>
+              <Label htmlFor="username">Username</Label>
+              <StyledField id="username" name="username" type="text" />
+              <ErrorMessage name="username" />
+            </FieldWrapper>
+    
+            <FieldWrapper>
+              <Label htmlFor="password">Password</Label>
+              <StyledField id="password" name="password" type="password" />
+              <ErrorMessage name="password" />
+            </FieldWrapper>
 
-          <Button type="submit">Submit</Button>
-        </StyledForm>
-      </Formik>
-    </StyledLogin>
+            <Button type="submit">Submit</Button>
+          </StyledForm>
+        </Formik>
+      </StyledLogin>
+    </LoginWrapper>
   );
 };
 

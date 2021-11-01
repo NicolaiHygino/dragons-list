@@ -3,31 +3,33 @@ import styled, { keyframes } from 'styled-components';
 const firstRender = keyframes`
   from {
     top: -30px;
+    opacity: 0;
   }
 
   to {
     top: 0px;
+    opacity: 1;
   }
 `;
 
 export const Background = styled.div`
-  position: absolute;
+  position: fixed;
   top: 0;
-  width: 100vw;
-  height: 100vh;
+  width: 100%;
+  height: 100%;
 
   background-color: rgba(57, 17, 91, .5);
-  backdrop-filter: blur(1px);
+  backdrop-filter: blur(2px);
 `;
 
 export const StyledModal = styled.section`
   position: relative;
   max-width: 300px;
   background-color: white;
-  border-radius: 5px;
+  border-radius: 8px;
   margin: 30px auto;
 
-  animation: ${firstRender} .5s ease;
+  animation: ${firstRender} .3s ease;
 `;
 
 export const Header = styled.div`
@@ -37,11 +39,10 @@ export const Header = styled.div`
   padding: 10px;
   background-color: var(--scd-color);
   color: white;
-  border-bottom-right-radius: 30px;
 `;
 
 export const Content = styled.div`
-  padding: 10px;
+  padding: 20px 10px;
 `;
 
 export const BackButton = styled.button`

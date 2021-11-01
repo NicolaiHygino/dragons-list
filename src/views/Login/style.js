@@ -1,17 +1,28 @@
 import styled from 'styled-components';
 import { Form, Field } from 'formik';
 
-export const StyledLogin = styled.section`
+export const LoginWrapper = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
-  height: 100vh;
-  width: 100vw;
+  width: 100%;
+  height: 85vh;
+`;
+
+export const StyledLogin = styled.section`
+  display: flex;
+  background-color: white;
+  align-items: center;
+  justify-content: center;
+  max-width: 300px;
+  width: 100%;
+  margin: 0 10px;
+  border-radius: 5px;
 `;
 
 export const Header = styled.h1`
   text-align: center;
-  margin-bottom: 30px;
+  margin-bottom: 10px;
 `;
 
 export const StyledForm = styled(Form)`
@@ -20,18 +31,29 @@ export const StyledForm = styled(Form)`
   padding: 10px;
 `;
 
-export const StyledField = styled(Field)`
-  width: 100%;
-  border: 1px solid #ccc;
-  border-radius: 5px;
-  padding: .8em 1em;
+export const Label = styled.label`
+  display: block;
+  font-weight: 600;
 `;
 
 export const FieldWrapper = styled.div`
   margin-bottom: 20px;
 `;
 
-export const Error = styled.p`
+export const StyledField = styled(Field)`
+  border: 0;
+  background-color: #e1dfe2;
+  color: #676767;
+  width: 100%;
+  padding: .7em;
+  transition: all ease .3s;
+
+  &:hover {
+    background-color: #D8D6D9;
+  }
+`;
+
+export const StyledError = styled.p`
   font-size: .9em;
   color: var(--error);
   margin-bottom: 20px;
